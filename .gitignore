@@ -1,0 +1,133 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+.pnpm-debug.log
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# Output directories for popular frameworks
+.next/
+**/.next/
+.nuxt/
+**/.nuxt/
+.vuepress/dist/
+**/.vuepress/dist/
+storybook-static/
+**/storybook-static/
+
+# Coverage
+coverage/
+**/coverage/
+.nyc_output/
+*.lcov
+
+# Parcel/Vite/Vitest caches
+.cache/
+.vite/
+.vitest/
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Cypress & Playwright
+cypress/screenshots/
+cypress/videos/
+playwright-report/
+**/cypress/screenshots/
+**/cypress/videos/
+**/playwright-report/
+
+# Serverless
+.serverless/
+**/.serverless/
+
+# FuseBox
+.fusebox/
+**/.fusebox/
+
+# DynamoDB local
+.dynamodb/
+**/.dynamodb/
+
+# Grunt intermediate storage
+.grunt/
+**/.grunt/
+
+# TypeScript
+typings/
+**/typings/
+*.tsbuildinfo
+
+# Eslint cache
+.eslintcache
+**/.eslintcache
+
+# npm cache
+.npm/
+**/.npm/
+
+# angular cache
+.angular/
+**/.angular/
+.postcss-angular
+
+# dotenv files
+.env
+.env.*
+**/.env
+**/.env.*
+
+# REPL history
+.node_repl_history
+
+# Yarn Integrity file
+.yarn-integrity
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore output of 'npm pack'
+*.tgz
+
+# Node-gyp / node-waf
+.lock-wscript
+
+# Compiled binary addons
+build/Release/
+**/build/Release/
+
+# Temporary files
+tmp/
+temp/
+**/tmp/
+**/temp/
