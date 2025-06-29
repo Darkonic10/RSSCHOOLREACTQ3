@@ -1,0 +1,8 @@
+html {
+  --global-bg: #242424;
+  --global-color: rgb(255 255 255 / 87%);
+  --header-bg: #e5e5e5;
+  --header-box-shadow-color: rgb(0 0 0 / 10%);
+  --custom-button-bg: #4f46e5;
+  --custom-input-border-color: #aaa;
+}

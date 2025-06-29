@@ -8,7 +8,7 @@ export async function searchAnime(
   limit = 20
 ): Promise<AnimeSearchResponse> {
   const res = await fetch(
-    `${BASE}/top/anime?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}`
+    `${BASE}/anime?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}`
   );
   if (!res.ok) throw new Error(`Jikan API error: ${res.status}`);
   return (await res.json()) as AnimeSearchResponse;
