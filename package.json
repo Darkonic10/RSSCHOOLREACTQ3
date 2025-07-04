@@ -14,7 +14,8 @@
     "stylelint:fix": "stylelint --fix src/**/*.css",
     "lint-staged": "lint-staged",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "deploy": "npm run build && gh-pages -d dist -e class-components"
   },
   "dependencies": {
     "colorthief": "^2.6.0",
@@ -35,6 +36,7 @@
     "eslint-plugin-react-compiler": "^19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "gh-pages": "^6.3.0",
     "globals": "^16.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
