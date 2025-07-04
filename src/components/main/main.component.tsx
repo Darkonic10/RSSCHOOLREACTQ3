@@ -3,6 +3,7 @@ import AnimeCard from '../ui/anime-card/anime-card.tsx';
 import styles from './main.component.module.css';
 import type { AppState } from '../../App.tsx';
 import Spinner from '../ui/spinner/spinner.tsx';
+import CustomButton from '../ui/custom-button/custom-button.tsx';
 
 class MainComponent extends React.Component<AppState> {
   render() {
@@ -18,9 +19,14 @@ class MainComponent extends React.Component<AppState> {
 
     if (error) {
       return (
-        <div className={`${styles.fullscreenCentered} ${styles.mainError}`}>
-          <p>{error}</p>
-        </div>
+        <>
+          <div className={`${styles.fullscreenCentered} ${styles.mainError}`}>
+            <p>{error}</p>
+            <div>
+              <CustomButton isNeedError={true}>Click to simulate error</CustomButton>
+            </div>
+          </div>
+        </>
       );
     }
 
@@ -35,14 +41,13 @@ class MainComponent extends React.Component<AppState> {
     return (
       <main className={styles.main}>
         <div className={styles.resultsContainer}>
-          <h2>Search Results ({searchResults.data.length} items found)</h2>
-
           <div className={styles.grid}>
             {searchResults.data.map((anime) => (
               <AnimeCard key={anime.mal_id} anime={anime} />
             ))}
           </div>
         </div>
+        <CustomButton isNeedError={true}>Click to simulate error</CustomButton>
       </main>
     );
   }

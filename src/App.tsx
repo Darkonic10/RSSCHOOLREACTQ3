@@ -3,6 +3,7 @@ import HeaderComponent from './components/header/header.component.tsx';
 import MainComponent from './components/main/main.component.tsx';
 import { searchAnime } from './api/jikan.ts';
 import type { AnimeSearchResponse } from './types/jikan.interface.ts';
+import ErrorBoundary from './components/error-boundary/error-boundary.component.tsx';
 
 export interface AppState {
   searchResults?: AnimeSearchResponse;
@@ -32,8 +33,10 @@ class App extends React.Component<object, AppState> {
     const { searchResults, isLoading, error } = this.state;
     return (
       <>
-        <HeaderComponent onSearch={this.handleSearch} />
-        <MainComponent searchResults={searchResults} error={error} isLoading={isLoading} />
+        <ErrorBoundary>
+          <HeaderComponent onSearch={this.handleSearch} />
+          <MainComponent searchResults={searchResults} error={error} isLoading={isLoading} />
+        </ErrorBoundary>
       </>
     );
   }

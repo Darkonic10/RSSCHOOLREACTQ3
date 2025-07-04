@@ -1,26 +1,46 @@
-.anime-card-container {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+p {
+  margin: 0;
+}
 
-  background-color: var(--anime-card-bg);
-  box-shadow: 0 2px 4px var(--anime-card-box-shadow-color);
+.anime-card-container {
+  position: relative;
+
+  overflow: hidden;
+
+  width: 100%;
+  padding: 0 24px 12px;
+  border-radius: 36px;
+
+  color: white;
+  text-align: center;
+
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 9px 0 var(--anime-card-box-shadow-color);
 
   transition: transform 0.2s ease;
-}
+ }
 
-.anime-card-container:hover {
+ .anime-card-container:hover {
   transform: translateY(-4px);
-}
+
+ }
 
 .anime-img {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
+  height: 300px;
+  margin-bottom: 12px;
+  border-radius: 12px;
 }
 
 .anime-title {
   margin-top: 8px;
   margin-bottom: 4px;
-  font-size: 1rem;
+  font-family: "Prosto One", sans-serif;
+  font-size: 1.25rem;
+}
+
+.anime-score {
+  padding: 12px 4px;
+  font-size: 18px;
+  text-align: start;
 }

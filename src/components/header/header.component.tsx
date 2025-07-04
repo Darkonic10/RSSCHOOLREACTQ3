@@ -26,7 +26,9 @@ class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
     this.setState({ searchValue: event.target.value.trim() });
   };
 
-  handleSearch = async () => {
+  handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     const { searchValue } = this.state;
     localStorage.setItem('lastSearch', searchValue);
     this.props.onSearch(searchValue);
@@ -35,17 +37,15 @@ class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
   render() {
     return (
       <header className={styles.header}>
-        <div className={styles.headerControlContainer}>
+        <form className={styles.headerForm} onSubmit={this.handleSearch}>
           <CustomInput
             placeholder="Search by title"
             name="Search"
             value={this.state.searchValue}
             onChange={this.handleInputChange}
           />
-          <CustomButton type="button" onClick={this.handleSearch}>
-            Search
-          </CustomButton>
-        </div>
+          <CustomButton type="submit">Search</CustomButton>
+        </form>
       </header>
     );
   }
