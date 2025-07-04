@@ -1,0 +1,26 @@
+.anime-card-container {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  background-color: var(--anime-card-bg);
+  box-shadow: 0 2px 4px var(--anime-card-box-shadow-color);
+
+  transition: transform 0.2s ease;
+}
+
+.anime-card-container:hover {
+  transform: translateY(-4px);
+}
+
+.anime-img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.anime-title {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
