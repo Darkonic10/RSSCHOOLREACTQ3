@@ -7,7 +7,7 @@
     "start": "vite",
     "build": "tsc -b && vite build",
     "type-check": "tsc -b --noEmit",
-    "format": "prettier --write 'src/**/*.{ts,tsx}'",
+    "format:fix": "prettier --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint src --ext .ts,.tsx,.html",
     "lint:fix": "eslint src --fix --ext .ts,.tsx,.html",
     "stylelint": "stylelint src/**/*.css",
@@ -17,6 +17,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "modern-normalize": "^3.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

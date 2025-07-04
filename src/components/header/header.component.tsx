@@ -16,12 +16,19 @@ class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
     searchValue: '',
   };
 
+  componentDidMount() {
+    const savedSearch = localStorage.getItem('lastSearch') ?? '';
+    this.setState({ searchValue: savedSearch });
+    this.props.onSearch(savedSearch);
+  }
+
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchValue: event.target.value });
+    this.setState({ searchValue: event.target.value.trim() });
   };
 
   handleSearch = async () => {
     const { searchValue } = this.state;
+    localStorage.setItem('lastSearch', searchValue);
     this.props.onSearch(searchValue);
   };
 
@@ -29,7 +36,12 @@ class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
     return (
       <header className={styles.header}>
         <div className={styles.headerControlContainer}>
-          <CustomInput placeholder="Search by title" name="Search" onChange={this.handleInputChange} />
+          <CustomInput
+            placeholder="Search by title"
+            name="Search"
+            value={this.state.searchValue}
+            onChange={this.handleInputChange}
+          />
           <CustomButton type="button" onClick={this.handleSearch}>
             Search
           </CustomButton>

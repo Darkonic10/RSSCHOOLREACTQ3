@@ -1,5 +1,5 @@
 export type AnimeSearchResponse = {
-  data: AnimeData;
+  data: AnimeData[];
   pagination: SearchPagination;
 };
 

@@ -1,6 +1,9 @@
 @import url("variables.css");
+@import url('../../node_modules/modern-normalize/modern-normalize.css');
 
 :root {
+  height: 100dvh;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
@@ -13,4 +16,13 @@
   background-color: var(--global-bg);
 
   font-synthesis: none;
+}
+
+body, #root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
 }
