@@ -1,8 +1,8 @@
 import React from 'react';
-import type { AnimeData } from '../../../types/jikan.interface.ts';
+import type { AnimeData } from '@/types/jikan.interface.ts';
 import ColorThief from 'colorthief';
 import styles from './anime-card.module.css';
-import { generateRadialGradient } from '../../../common/common.ts';
+import { generateRadialGradient } from '@/common/common.ts';
 
 interface Props {
   anime: AnimeData;
