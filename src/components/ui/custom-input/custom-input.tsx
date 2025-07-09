@@ -15,6 +15,7 @@ class CustomInput extends React.Component<CustomInputProps> {
 
     return (
       <input
+        data-testid="custom-input"
         className={styles.input}
         type={type}
         name={name}

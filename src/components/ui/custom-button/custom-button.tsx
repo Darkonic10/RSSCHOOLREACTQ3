@@ -31,7 +31,7 @@ class CustomButton extends React.Component<CustomButtonProps> {
     }
 
     return (
-      <button className={styles.button} type={type} onClick={this.handleClick}>
+      <button className={styles.button} type={type} onClick={this.handleClick} data-testid="custom-button">
         {children}
       </button>
     );
