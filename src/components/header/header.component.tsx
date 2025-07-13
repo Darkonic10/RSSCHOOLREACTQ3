@@ -37,7 +37,7 @@ class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
   render() {
     return (
       <header className={styles.header}>
-        <form className={styles.headerForm} onSubmit={this.handleSearch}>
+        <form className={styles.headerForm} onSubmit={this.handleSearch} data-testid="headerForm">
           <CustomInput
             placeholder="Search by title"
             name="Search"

@@ -1,4 +1,4 @@
-import type { AnimeData } from '@/types/jikan.interface.ts';
+import type { AnimeData, AnimeSearchResponse, SearchPagination } from '@/types/jikan.interface.ts';
 
 export const animeMock: AnimeData = {
   mal_id: 1,
@@ -194,4 +194,20 @@ export const animeMockMinimal: AnimeData = {
     name: '',
     url: '',
   },
+};
+
+export const paginationMock: SearchPagination = {
+  last_visible_page: 1,
+  current_page: 1,
+  has_next_page: true,
+  items: {
+    per_page: 20,
+    count: 20,
+    total: 100,
+  },
+};
+
+export const animeResponse: AnimeSearchResponse = {
+  data: [animeMock],
+  pagination: paginationMock,
 };

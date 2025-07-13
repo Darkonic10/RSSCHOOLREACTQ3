@@ -19,10 +19,10 @@ vi.mock('@/common/common.ts', () => {
   };
 });
 
-import { cleanup, render, screen, act } from '@testing-library/react';
+import { cleanup, render, screen, act, fireEvent } from '@testing-library/react';
 import AnimeCard from '@/components/ui/anime-card/anime-card.tsx';
 import { generateRadialGradient } from '@/common/common.ts';
-import { animeMock, animeMockMinimal } from '@/components/ui/anime-card/anime-card.mock.ts';
+import { animeMock, animeMockMinimal } from '@/api/jikan.mock.ts';
 
 describe('AnimeCard', () => {
   beforeEach(() => {
@@ -63,7 +63,7 @@ describe('AnimeCard', () => {
     render(<AnimeCard anime={animeMock} />);
     const img = screen.getByRole('img');
     await act(async () => {
-      img.dispatchEvent(new Event('load', { bubbles: true }));
+      fireEvent.load(img);
 
       await new Promise((r) => setTimeout(r, 0));
     });
