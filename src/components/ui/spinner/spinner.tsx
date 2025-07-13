@@ -4,8 +4,8 @@ import styles from './spinner.module.css';
 class Spinner extends React.Component {
   render() {
     return (
-      <div className={styles.loaderContainer}>
-        <div className={styles.spinner}></div>
+      <div className={styles.loaderContainer} data-testid="spinner-container">
+        <div className={styles.spinner} data-testid="spinner"></div>
       </div>
     );
   }
