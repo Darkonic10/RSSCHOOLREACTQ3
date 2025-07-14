@@ -16,7 +16,7 @@ export default mergeConfig(
         exclude: [
           'src/**/*.test.{js,jsx,ts,tsx}',
           'src/**/*.spec.{js,jsx,ts,tsx}',
-          'src/index.{js,jsx,ts,tsx}',
+          'src/main.{js,jsx,ts,tsx}',
           'src/setupTests.{js,ts}',
           'src/**/*.d.ts',
           'node_modules/**/',
