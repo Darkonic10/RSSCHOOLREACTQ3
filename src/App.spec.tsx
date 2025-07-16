@@ -4,7 +4,7 @@ import { searchAnime } from '@/api/jikan.ts';
 import { animeResponse } from '@/api/jikan.mock.ts';
 
 vi.mock('./api/jikan', () => ({
-  searchAnime: vi.fn(() => animeResponse),
+  searchAnime: vi.fn(() => Promise.resolve(animeResponse)),
 }));
 
 describe('App component', () => {

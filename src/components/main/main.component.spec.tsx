@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import MainComponent from './main.component';
-import type { AppState } from '../../App';
 import type { AnimeData } from '@/types/jikan.interface.ts';
 import { animeMock, animeMockMinimal, paginationMock } from '@/api/jikan.mock.ts';
 
@@ -15,7 +14,7 @@ vi.mock('../ui/spinner/spinner.tsx', () => ({
 }));
 
 describe('MainComponent', () => {
-  const baseProps: AppState = {
+  const baseProps = {
     isLoading: false,
     error: undefined,
     searchResults: undefined,
@@ -33,7 +32,6 @@ describe('MainComponent', () => {
   it('renders error message when error is present', () => {
     render(<MainComponent {...baseProps} error="Something went wrong" />);
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /simulate error/i })).toBeInTheDocument();
   });
 
   it('renders no results message if searchResults is undefined', () => {

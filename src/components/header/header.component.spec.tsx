@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import HeaderComponent from './header.component.tsx';
 
 describe('HeaderComponent', () => {
@@ -20,12 +20,17 @@ describe('HeaderComponent', () => {
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
-  it('loads saved search from localStorage on mount', () => {
-    localStorage.setItem('lastSearch', 'Naruto');
+  it('loads saved search from localStorage on mount', async () => {
+    localStorage.setItem('lastSearch', JSON.stringify('Naruto'));
+
     render(<HeaderComponent onSearch={onSearchMock} />);
 
-    const input = screen.getByRole('textbox') as HTMLInputElement;
-    expect(input.value).toBe('Naruto');
+    const input = (await screen.findByRole('textbox')) as HTMLInputElement;
+
+    await waitFor(() => {
+      expect(input.value).toBe('Naruto');
+    });
+
     expect(onSearchMock).toHaveBeenCalledWith('Naruto');
   });
 
@@ -55,7 +60,7 @@ describe('HeaderComponent', () => {
     fireEvent.change(input, { target: { value: '  Bleach  ' } });
     fireEvent.click(button);
 
-    expect(localStorage.getItem('lastSearch')).toBe('Bleach');
+    expect(JSON.parse(localStorage.getItem('lastSearch') ?? '')).toBe('Bleach');
     expect(onSearchMock).toHaveBeenCalledWith('Bleach');
   });
 
@@ -67,7 +72,7 @@ describe('HeaderComponent', () => {
     fireEvent.change(input, { target: { value: 'NewTerm' } });
     fireEvent.submit(screen.getByTestId('headerForm'));
 
-    expect(localStorage.getItem('lastSearch')).toBe('NewTerm');
+    expect(JSON.parse(localStorage.getItem('lastSearch') ?? '')).toBe('NewTerm');
     expect(onSearchMock).toHaveBeenCalledWith('NewTerm');
   });
 });
