@@ -4,6 +4,7 @@ html {
   --header-bg: #e5e5e5;
   --header-box-shadow-color: rgb(0 0 0 / 10%);
   --custom-button-bg: darkred;
+  --custom-button-bg-disabled: gray;
   --custom-input-border-color: #aaa;
   --anime-card-bg: rgb(50 50 50 / 50%);
   --anime-card-box-shadow-color: rgb(0 0 0 / 37%);

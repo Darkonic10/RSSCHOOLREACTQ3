@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { AnimeData } from '@/types/jikan.interface.ts';
 import ColorThief from 'colorthief';
 import styles from './anime-card.module.css';
@@ -8,74 +8,55 @@ interface Props {
   anime: AnimeData;
 }
 
-interface AnimeCardState {
-  background: string;
-}
+const AnimeCard: React.FC<Props> = ({ anime }) => {
+  const [background, setBackground] = useState<string>('linear-gradient(to bottom, #222, #000)');
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
-class AnimeCard extends React.Component<Props, AnimeCardState> {
-  imgRef: React.RefObject<HTMLImageElement>;
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      background: 'linear-gradient(to bottom, #222, #000)',
+    const handleImageLoad = () => {
+      try {
+        const colorThief = new ColorThief();
+        const palette = colorThief.getPalette(img, 4);
+        const gradient = generateRadialGradient(palette);
+        setBackground(gradient);
+      } catch (error) {
+        console.error('Failed to extract color', error);
+      }
     };
-    this.imgRef = React.createRef() as React.RefObject<HTMLImageElement>;
-  }
 
-  componentDidMount() {
-    const img = this.imgRef.current;
-    if (!img) return;
-
-    img.addEventListener('load', this.handleImageLoad);
-  }
-
-  componentWillUnmount() {
-    const img = this.imgRef.current;
-    if (img) {
-      img.removeEventListener('load', this.handleImageLoad);
+    if (img.complete && img.naturalHeight !== 0) {
+      handleImageLoad();
+    } else {
+      img.addEventListener('load', handleImageLoad);
     }
-  }
 
-  handleImageLoad = () => {
-    const img = this.imgRef.current;
-    if (!img) return;
+    return () => {
+      img.removeEventListener('load', handleImageLoad);
+    };
+  }, []);
 
-    try {
-      const colorThief = new ColorThief();
-      const palette = colorThief.getPalette(img, 4);
-      const gradient = generateRadialGradient(palette);
-      this.setState({ background: gradient });
-    } catch (error) {
-      console.error('Failed to extract color', error);
-    }
-  };
+  const title = anime.titles[0]?.title ?? 'Untitled';
+  const imageUrl = anime.images?.jpg?.image_url;
 
-  render() {
-    const data = this.props.anime;
-    const title = data.titles[0]?.title ?? 'Untitled';
-    const imageUrl = data.images?.jpg?.image_url;
-    const { background } = this.state;
-
-    return (
-      <div className={styles.animeCardContainer} style={{ background }}>
-        <div className={styles.animeScore}>★ {data.score ?? 'N/A'}</div>
-        {imageUrl && (
-          <img className={styles.animeImg} ref={this.imgRef} src={imageUrl} crossOrigin="anonymous" alt={title} />
-        )}
-        <h3 className={styles.animeTitle}>{title}</h3>
-        <p>
-          <strong>Episodes:</strong> {data.episodes ?? 'Unknown'}
-        </p>
-        <p>
-          <strong>Source:</strong> {data.source ?? 'Unknown'}
-        </p>
-        <p>
-          <strong>Status:</strong> {data.status ?? 'Unknown'}
-        </p>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styles.animeCardContainer} style={{ background }}>
+      <div className={styles.animeScore}>★ {anime.score ?? 'N/A'}</div>
+      {imageUrl && <img className={styles.animeImg} ref={imgRef} src={imageUrl} crossOrigin="anonymous" alt={title} />}
+      <h3 className={styles.animeTitle}>{title}</h3>
+      <p>
+        <strong>Episodes:</strong> {anime.episodes ?? 'Unknown'}
+      </p>
+      <p>
+        <strong>Source:</strong> {anime.source ?? 'Unknown'}
+      </p>
+      <p>
+        <strong>Status:</strong> {anime.status ?? 'Unknown'}
+      </p>
+    </div>
+  );
+};
 
 export default AnimeCard;

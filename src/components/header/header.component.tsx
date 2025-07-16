@@ -1,54 +1,53 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './header.component.module.css';
 import CustomInput from '../ui/custom-input/custom-input.tsx';
 import CustomButton from '../ui/custom-button/custom-button.tsx';
+import { useLocalStorage, useOnMount, useThrottleCallback } from '@/hooks';
+import { REQUEST_ANIME_DATA_DELAY } from '@/common/constants.ts';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
 }
 
-interface HeaderState {
-  searchValue: string;
-}
+const HeaderComponent: React.FC<HeaderProps> = ({ onSearch }) => {
+  const [searchValue, setSearchValue] = useLocalStorage<string>('lastSearch', '');
+  const [canSearch, setCanSearch] = useState<boolean>(true);
 
-class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
-  state: HeaderState = {
-    searchValue: '',
-  };
+  const throttledSearch = useThrottleCallback((query: string) => {
+    onSearch(query);
+    setCanSearch(false);
+    setTimeout(() => setCanSearch(true), REQUEST_ANIME_DATA_DELAY);
+  }, REQUEST_ANIME_DATA_DELAY);
 
-  componentDidMount() {
-    const savedSearch = localStorage.getItem('lastSearch') ?? '';
-    this.setState({ searchValue: savedSearch });
-    this.props.onSearch(savedSearch);
-  }
+  useOnMount(() => {
+    onSearch(searchValue);
+  });
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchValue: event.target.value.trim() });
-  };
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value.trim());
+    },
+    [setSearchValue],
+  );
 
-  handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSearch = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      throttledSearch(searchValue);
+    },
+    [searchValue, throttledSearch],
+  );
 
-    const { searchValue } = this.state;
-    localStorage.setItem('lastSearch', searchValue);
-    this.props.onSearch(searchValue);
-  };
-
-  render() {
-    return (
-      <header className={styles.header}>
-        <form className={styles.headerForm} onSubmit={this.handleSearch} data-testid="headerForm">
-          <CustomInput
-            placeholder="Search by title"
-            name="Search"
-            value={this.state.searchValue}
-            onChange={this.handleInputChange}
-          />
-          <CustomButton type="submit">Search</CustomButton>
-        </form>
-      </header>
-    );
-  }
-}
+  return (
+    <header className={styles.header}>
+      <form className={styles.headerForm} onSubmit={handleSearch} data-testid="headerForm">
+        <CustomInput placeholder="Search by title" name="Search" value={searchValue} onChange={handleInputChange} />
+        <CustomButton type="submit" disabled={!canSearch}>
+          Search
+        </CustomButton>
+      </form>
+    </header>
+  );
+};
 
 export default HeaderComponent;

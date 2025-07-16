@@ -1,4 +1,4 @@
-import React, { type MouseEventHandler } from 'react';
+import React, { type MouseEventHandler, useState } from 'react';
 import styles from './custom-button.module.css';
 
 interface CustomButtonProps {
@@ -6,36 +6,35 @@ interface CustomButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
   isNeedError?: boolean;
+  disabled?: boolean;
 }
 
-class CustomButton extends React.Component<CustomButtonProps> {
-  state = {
-    shouldThrow: false,
-  };
+const CustomButton: React.FC<CustomButtonProps> = ({
+  children,
+  onClick,
+  type = 'button',
+  isNeedError = false,
+  disabled = false,
+}) => {
+  const [shouldThrow, setShouldThrow] = useState(false);
 
-  handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { isNeedError, onClick } = this.props;
-
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (isNeedError) {
-      this.setState({ shouldThrow: true });
+      setShouldThrow(true);
     } else if (onClick) {
       onClick(e);
     }
   };
 
-  render() {
-    const { children, type = 'button' } = this.props;
-
-    if (this.state.shouldThrow) {
-      throw new Error('💣 Simulated error in render after click!');
-    }
-
-    return (
-      <button className={styles.button} type={type} onClick={this.handleClick} data-testid="custom-button">
-        {children}
-      </button>
-    );
+  if (shouldThrow) {
+    throw new Error('💣 Simulated error in render after click!');
   }
-}
+
+  return (
+    <button className={styles.button} type={type} onClick={handleClick} disabled={disabled} data-testid="custom-button">
+      {children}
+    </button>
+  );
+};
 
 export default CustomButton;
