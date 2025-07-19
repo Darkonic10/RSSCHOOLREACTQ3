@@ -7,7 +7,7 @@ const AboutPageComponent: React.FC = () => {
       <p>Author: Дмитрий (Darkonic10)</p>
       <p>
         This application was created as part of the{' '}
-        <a href="https://rs.school/react/" target="_blank" rel="noreferrer">
+        <a href="https://rs.school/courses/reactjs" target="_blank" rel="noreferrer">
           RS School React course
         </a>
         .

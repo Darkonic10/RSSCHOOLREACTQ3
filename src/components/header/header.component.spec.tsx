@@ -3,20 +3,21 @@ import HeaderComponent from './header.component.tsx';
 import { MemoryRouter } from 'react-router-dom';
 import * as routerDom from 'react-router-dom';
 
-const setSearchParamsMock = vi.fn();
+const navigateMock = vi.fn();
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual<typeof routerDom>('react-router-dom');
   return {
     ...actual,
-    useSearchParams: () => [new URLSearchParams(), setSearchParamsMock],
+    useNavigate: () => navigateMock,
+    useLocation: () => ({ pathname: '/' }),
   };
 });
 
 describe('HeaderComponent', () => {
   beforeEach(() => {
     localStorage.clear();
-    setSearchParamsMock.mockClear();
+    navigateMock.mockClear();
   });
 
   afterEach(() => {
@@ -38,23 +39,18 @@ describe('HeaderComponent', () => {
     localStorage.setItem('lastSearch', JSON.stringify('Naruto'));
 
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/']}>
         <HeaderComponent />
       </MemoryRouter>,
     );
 
     const input = await screen.findByRole('textbox');
 
-    await waitFor(() => {
-      expect(input).toHaveValue('Naruto');
-    });
-
+    expect(input).toHaveValue('Naruto');
     fireEvent.submit(screen.getByTestId('headerForm'));
 
     await waitFor(() => {
-      expect(setSearchParamsMock).toHaveBeenCalled();
-      const paramsPassed = setSearchParamsMock.mock.calls[0][0];
-      expect(paramsPassed.get('q')).toBe('Naruto');
+      expect(navigateMock).toHaveBeenCalledWith({ search: '?q=Naruto&page=1' }, { replace: true });
     });
   });
 
@@ -67,7 +63,6 @@ describe('HeaderComponent', () => {
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveValue('');
-    expect(setSearchParamsMock).not.toHaveBeenCalled();
   });
 
   it('updates input trimmed value on change', () => {
@@ -83,7 +78,7 @@ describe('HeaderComponent', () => {
     expect(input).toHaveValue('One Piece');
   });
 
-  it('saves trimmed search and calls setSearchParams on submit', () => {
+  it('saves trimmed search and calls navigate with correct params', () => {
     render(
       <MemoryRouter>
         <HeaderComponent />
@@ -97,17 +92,13 @@ describe('HeaderComponent', () => {
     fireEvent.click(button);
 
     expect(JSON.parse(localStorage.getItem('lastSearch') ?? '""')).toBe('Bleach');
-    expect(setSearchParamsMock).toHaveBeenCalled();
-
-    const paramsPassed = setSearchParamsMock.mock.calls[0][0];
-    expect(paramsPassed.get('q')).toBe('Bleach');
-    expect(paramsPassed.get('page')).toBe('1');
+    expect(navigateMock).toHaveBeenCalledWith({ search: '?q=Bleach&page=1' }, { replace: true });
   });
 
   it('overwrites previous localStorage value on new search', () => {
     localStorage.setItem('lastSearch', JSON.stringify('OldTerm'));
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/']}>
         <HeaderComponent />
       </MemoryRouter>,
     );
@@ -117,10 +108,7 @@ describe('HeaderComponent', () => {
     fireEvent.submit(screen.getByTestId('headerForm'));
 
     expect(JSON.parse(localStorage.getItem('lastSearch') ?? '""')).toBe('NewTerm');
-    expect(setSearchParamsMock).toHaveBeenCalled();
 
-    const paramsPassed = setSearchParamsMock.mock.calls[0][0];
-    expect(paramsPassed.get('q')).toBe('NewTerm');
-    expect(paramsPassed.get('page')).toBe('1');
+    expect(navigateMock).toHaveBeenCalledWith({ search: '?q=NewTerm&page=1' }, { replace: true });
   });
 });

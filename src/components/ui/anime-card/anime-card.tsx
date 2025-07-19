@@ -42,7 +42,7 @@ const AnimeCard: React.FC<Props> = ({ anime }) => {
   const imageUrl = anime.images?.jpg?.image_url;
 
   return (
-    <div className={styles.animeCardContainer} style={{ background }}>
+    <div className={styles.animeCardContainer} style={{ background }} data-testid="anime-card">
       <div className={styles.animeScore}>★ {anime.score ?? 'N/A'}</div>
       {imageUrl && <img className={styles.animeImg} ref={imgRef} src={imageUrl} crossOrigin="anonymous" alt={title} />}
       <h3 className={styles.animeTitle}>{title}</h3>
