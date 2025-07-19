@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { useCurrentValue } from '@/hooks/useCurrentValue.ts';
+import { useCurrentValue } from '@/common/hooks/useCurrentValue.ts';
 
 export function useOnMount(callback: () => void): void {
   const savedCallbackRef = useCurrentValue(callback);

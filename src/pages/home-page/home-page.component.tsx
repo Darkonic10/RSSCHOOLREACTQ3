@@ -1,17 +1,16 @@
 import React from 'react';
-import AnimeCard from '../ui/anime-card/anime-card.tsx';
-import styles from './main.component.module.css';
-import Spinner from '../ui/spinner/spinner.tsx';
-import type { AnimeSearchResponse } from '@/types/jikan.interface.ts';
+import AnimeCard from '../../components/ui/anime-card/anime-card.tsx';
+import styles from './home-page.component.module.css';
+import Spinner from '../../components/ui/spinner/spinner.tsx';
+import { useLoaderData, useNavigation } from 'react-router-dom';
+import type { LoaderReturnType } from '@/pages/home-page/home-page.loader.ts';
+import Pagination from '@/components/paginator/paginator.component.tsx';
 
-interface MainComponentProps {
-  searchResults: AnimeSearchResponse | undefined;
-  isLoading: boolean;
-  error: string | undefined;
-}
+const HomePageComponent: React.FC = () => {
+  const { error, searchResults } = useLoaderData() as LoaderReturnType;
+  const navigation = useNavigation();
 
-const MainComponent: React.FC<MainComponentProps> = ({ isLoading, error, searchResults }) => {
-  if (isLoading) {
+  if (navigation.state === 'loading') {
     return (
       <div className={styles.fullscreenCentered}>
         <Spinner />
@@ -35,6 +34,8 @@ const MainComponent: React.FC<MainComponentProps> = ({ isLoading, error, searchR
     );
   }
 
+  const { current_page, last_visible_page } = searchResults.pagination;
+
   return (
     <main className={styles.main}>
       <div className={styles.resultsContainer}>
@@ -43,9 +44,11 @@ const MainComponent: React.FC<MainComponentProps> = ({ isLoading, error, searchR
             <AnimeCard key={anime.mal_id} anime={anime} />
           ))}
         </div>
+
+        <Pagination currentPage={current_page} totalPages={last_visible_page} />
       </div>
     </main>
   );
 };
 
-export default MainComponent;
+export default HomePageComponent;
