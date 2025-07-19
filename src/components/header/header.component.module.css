@@ -1,7 +1,7 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   padding: 24px 12px;
 
@@ -9,8 +9,9 @@
   box-shadow: 0 1px 3px var(--header-box-shadow-color);
 }
 
- .header-form {
+.header-form {
   display: flex;
   gap: 10px;
   align-items: center;
- }
+  margin: 0 auto;
+}

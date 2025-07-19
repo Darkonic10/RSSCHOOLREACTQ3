@@ -1,0 +1,6 @@
+.paginator {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 1rem;
+}
