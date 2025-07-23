@@ -17,7 +17,7 @@
     "test:coverage": "vitest run --coverage",
     "preview": "vite preview",
     "prepare": "husky",
-    "deploy": "npm run build && gh-pages -d dist -e hooks-and-routing"
+    "deploy": "npm run build && gh-pages -d dist --nojekyll"
   },
   "dependencies": {
     "@testing-library/user-event": "^14.6.1",

@@ -27,7 +27,7 @@ export async function homePageLoader({ request }: LoaderFunctionArgs): Promise<L
   }
 
   try {
-    const data = await searchAnime(query, page, 20);
+    const data = await searchAnime(query, page || 1, 20);
     return { searchResults: data };
   } catch (e) {
     return { error: String(e) };
