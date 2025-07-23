@@ -36,7 +36,11 @@ describe('MainComponent', () => {
     mockedUseNavigation.mockReturnValue({ state: 'loading' } as Navigation);
     mockedUseLoaderData.mockReturnValue({} as LoaderReturnType);
 
-    render(<HomePageComponent />);
+    render(
+      <MemoryRouter>
+        <HomePageComponent />
+      </MemoryRouter>,
+    );
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
@@ -44,7 +48,11 @@ describe('MainComponent', () => {
     mockedUseNavigation.mockReturnValue({ state: 'idle' } as Navigation);
     mockedUseLoaderData.mockReturnValue({ error: 'Something went wrong' });
 
-    render(<HomePageComponent />);
+    render(
+      <MemoryRouter>
+        <HomePageComponent />
+      </MemoryRouter>,
+    );
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
   });
 
@@ -52,7 +60,11 @@ describe('MainComponent', () => {
     mockedUseNavigation.mockReturnValue({ state: 'idle' } as Navigation);
     mockedUseLoaderData.mockReturnValue({ error: undefined, searchResults: undefined });
 
-    render(<HomePageComponent />);
+    render(
+      <MemoryRouter>
+        <HomePageComponent />
+      </MemoryRouter>,
+    );
     expect(screen.getByText(/no results found/i)).toBeInTheDocument();
   });
 
@@ -63,7 +75,11 @@ describe('MainComponent', () => {
       searchResults: { data: [], pagination: paginationMock },
     });
 
-    render(<HomePageComponent />);
+    render(
+      <MemoryRouter>
+        <HomePageComponent />
+      </MemoryRouter>,
+    );
     expect(screen.getByText(/no results found/i)).toBeInTheDocument();
   });
 

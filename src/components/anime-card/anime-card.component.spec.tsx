@@ -20,7 +20,7 @@ vi.mock('@/common/common.ts', () => {
 });
 
 import { cleanup, render, screen, act, fireEvent } from '@testing-library/react';
-import AnimeCard from '@/components/ui/anime-card/anime-card.tsx';
+import AnimeCardComponent from '@/components/anime-card/anime-card.component.tsx';
 import { generateRadialGradient } from '@/common/common.ts';
 import { animeMock, animeMockMinimal } from '@/api/jikan.mock.ts';
 
@@ -35,7 +35,7 @@ describe('AnimeCard', () => {
   });
 
   it('renders correctly with complete data', () => {
-    render(<AnimeCard anime={animeMock} />);
+    render(<AnimeCardComponent anime={animeMock} />);
     expect(screen.getByText('★ 8.7')).toBeInTheDocument();
     expect(screen.getByRole('img')).toHaveAttribute('src', animeMock.images.jpg.image_url);
     expect(screen.getByText('Naruto')).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('AnimeCard', () => {
   });
 
   it('gracefully handles missing fields', () => {
-    render(<AnimeCard anime={animeMockMinimal} />);
+    render(<AnimeCardComponent anime={animeMockMinimal} />);
     expect(screen.getByText('★ N/A')).toBeInTheDocument();
     expect(screen.getByText('Untitled')).toBeInTheDocument();
     const labelEpisodes = screen.getByText('Episodes:');
@@ -60,7 +60,7 @@ describe('AnimeCard', () => {
   });
 
   it('calls generateRadialGradient', async () => {
-    render(<AnimeCard anime={animeMock} />);
+    render(<AnimeCardComponent anime={animeMock} />);
     const img = screen.getByRole('img');
     await act(async () => {
       fireEvent.load(img);

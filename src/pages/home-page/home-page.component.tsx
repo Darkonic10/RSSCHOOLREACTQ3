@@ -1,14 +1,24 @@
 import React from 'react';
-import AnimeCard from '../../components/ui/anime-card/anime-card.tsx';
+import AnimeCardComponent from '@/components/anime-card/anime-card.component.tsx';
 import styles from './home-page.component.module.css';
 import Spinner from '../../components/ui/spinner/spinner.tsx';
-import { useLoaderData, useNavigation } from 'react-router-dom';
+import { useLoaderData, useNavigate, useNavigation, useSearchParams } from 'react-router-dom';
 import type { LoaderReturnType } from '@/pages/home-page/home-page.loader.ts';
 import Pagination from '@/components/paginator/paginator.component.tsx';
+import type { AnimeData } from '@/types/jikan.interface.ts';
+import AnimeDetailsComponent from '@/components/anime-details/anime-details.component.tsx';
 
 const HomePageComponent: React.FC = () => {
   const { error, searchResults } = useLoaderData() as LoaderReturnType;
   const navigation = useNavigation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const handleCardClick = (anime: AnimeData) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('details', String(anime.mal_id));
+    navigate({ search: newParams.toString() });
+  };
 
   if (navigation.state === 'loading') {
     return (
@@ -41,12 +51,18 @@ const HomePageComponent: React.FC = () => {
       <div className={styles.resultsContainer}>
         <div className={styles.grid}>
           {searchResults.data.map((anime) => (
-            <AnimeCard key={anime.mal_id} anime={anime} />
+            <AnimeCardComponent key={anime.mal_id} anime={anime} onClick={() => handleCardClick(anime)} />
           ))}
         </div>
 
         <Pagination currentPage={current_page} totalPages={last_visible_page} />
       </div>
+
+      {searchParams.has('details') && (
+        <div className={styles.detailsContainer}>
+          <AnimeDetailsComponent />
+        </div>
+      )}
     </main>
   );
 };
