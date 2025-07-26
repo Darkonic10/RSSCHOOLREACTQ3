@@ -22,7 +22,7 @@ vi.mock('@/common/common.ts', () => {
 import { cleanup, render, screen, act, fireEvent } from '@testing-library/react';
 import AnimeCardComponent from '@/components/anime-card/anime-card.component.tsx';
 import { generateRadialGradient } from '@/common/common.ts';
-import { animeMock, animeMockMinimal } from '@/api/jikan.mock.ts';
+import { animeMock, animeMockMinimal } from '@/mocks/jikan.mock.ts';
 
 describe('AnimeCard', () => {
   beforeEach(() => {

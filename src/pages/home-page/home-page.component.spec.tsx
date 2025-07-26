@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import HomePageComponent from './home-page.component.tsx';
 import type { AnimeData } from '@/types/jikan.interface.ts';
-import { animeMock, animeMockMinimal, paginationMock } from '@/api/jikan.mock.ts';
+import { animeMock, animeMockMinimal, paginationMock } from '@/mocks/jikan.mock.ts';
 import { MemoryRouter, type Navigation, useLoaderData, useNavigation } from 'react-router-dom';
 import type { LoaderReturnType } from '@/pages/home-page/home-page.loader.ts';
 
@@ -18,10 +18,6 @@ vi.mock('../ui/anime-card/anime-card.tsx', () => ({
   default: ({ anime }: { anime: AnimeData }) => (
     <div data-testid="anime-card">{anime.titles?.[0]?.title ?? 'Untitled'}</div>
   ),
-}));
-
-vi.mock('../ui/spinner/spinner.tsx', () => ({
-  default: () => <div data-testid="spinner">Loading...</div>,
 }));
 
 describe('MainComponent', () => {

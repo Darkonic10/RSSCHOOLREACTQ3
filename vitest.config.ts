@@ -25,7 +25,7 @@ export default mergeConfig(
           statements: 80,
           branches: 50,
           functions: 50,
-          lines: 50,
+          lines: 60,
           perFile: true,
           autoUpdate: true,
         },

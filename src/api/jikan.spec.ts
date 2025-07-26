@@ -1,5 +1,5 @@
 import { getAnimeById, searchAnime } from './jikan.ts';
-import { animeMock, animeResponse } from '@/api/jikan.mock.ts';
+import { animeMock, animeResponse } from '@/mocks/jikan.mock.ts';
 
 describe('searchAnime', () => {
   beforeEach(() => {

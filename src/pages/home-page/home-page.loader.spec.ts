@@ -2,7 +2,7 @@ import { searchAnime } from '@/api/jikan.ts';
 import { homePageLoader, type LoaderReturnType } from '@/pages/home-page/home-page.loader.ts';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 import type { AnimeSearchResponse } from '@/types/jikan.interface.ts';
-import { paginationMock } from '@/api/jikan.mock.ts';
+import { localStorageMock, paginationMock } from '@/mocks';
 
 vi.mock('@/api/jikan.ts', () => ({
   searchAnime: vi.fn(),
@@ -12,6 +12,7 @@ describe('homePageLoader', () => {
   const mockedSearchAnime = searchAnime as unknown as ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+    vi.stubGlobal('localStorage', localStorageMock);
     localStorage.clear();
     vi.resetAllMocks();
   });

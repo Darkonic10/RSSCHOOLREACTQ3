@@ -1,17 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import ErrorBoundary from './error-boundary.component';
-import React from 'react';
-import { vi } from 'vitest';
 
 const ThrowingComponent = () => {
   throw new Error('💥 Component crashed');
 };
-
-vi.mock('../ui/custom-button/custom-button.tsx', () => ({
-  default: ({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) => (
-    <button onClick={onClick}>{children}</button>
-  ),
-}));
 
 describe('ErrorBoundary', () => {
   it('renders children when no error', () => {

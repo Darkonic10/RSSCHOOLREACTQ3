@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import HeaderComponent from './header.component.tsx';
 import { MemoryRouter } from 'react-router-dom';
 import * as routerDom from 'react-router-dom';
+import { localStorageMock } from '@/mocks';
 
 const navigateMock = vi.fn();
 
@@ -16,6 +17,7 @@ vi.mock('react-router-dom', async () => {
 
 describe('HeaderComponent', () => {
   beforeEach(() => {
+    vi.stubGlobal('localStorage', localStorageMock);
     localStorage.clear();
     navigateMock.mockClear();
   });
