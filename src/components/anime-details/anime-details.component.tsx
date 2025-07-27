@@ -1,25 +1,26 @@
 import { useLoaderData, useSearchParams } from 'react-router-dom';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Spinner from '@/components/ui/spinner/spinner.tsx';
 import type { AnimeData } from '@/types/jikan.interface.ts';
 import styles from './anime-details.component.module.css';
 import type { LoaderReturnType } from '@/pages/home-page/home-page.loader.ts';
 import { getAnimeById } from '@/api/jikan.ts';
+import { useCurrentValue } from '@/common/hooks';
 
 const AnimeDetailsComponent: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get('details');
-  const { searchResults } = useLoaderData() as LoaderReturnType;
+  const { searchResults } = useLoaderData<LoaderReturnType>();
 
   const [anime, setAnime] = useState<AnimeData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const searchValueRef = useRef(searchResults);
+  const currentSearchValue = useCurrentValue(searchResults);
 
   useEffect(() => {
     if (!id) return;
 
-    const existing = searchValueRef.current?.data.find((a) => String(a.mal_id) === id);
+    const existing = currentSearchValue.current?.data.find((a) => String(a.mal_id) === id);
     if (existing) {
       setAnime(existing);
       setLoading(false);
@@ -31,12 +32,13 @@ const AnimeDetailsComponent: React.FC = () => {
       .then((data) => setAnime(data.data))
       .catch(() => setAnime(null))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, currentSearchValue]);
 
-  const handleClose = () => {
-    searchParams.delete('details');
-    setSearchParams(searchParams);
-  };
+  const handleClose = useCallback(() => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete('details');
+    setSearchParams(newParams);
+  }, [searchParams, setSearchParams]);
 
   return (
     <div className={styles.detailsContainer}>

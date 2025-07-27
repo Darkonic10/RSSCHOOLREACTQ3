@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const HeaderComponent: React.FC = () => {
   const [searchValue, setSearchValue] = useLocalStorage<string>('lastSearch', '');
+  const [currentUserInput, setCurrentUserInput] = useState<string>(searchValue);
   const [canSearch, setCanSearch] = useState<boolean>(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +17,9 @@ const HeaderComponent: React.FC = () => {
     setCanSearch(false);
 
     const newParams = new URLSearchParams();
-    newParams.set('q', query);
+    if (query) {
+      newParams.set('q', query);
+    }
     newParams.set('page', '1');
 
     if (location.pathname === '/') {
@@ -33,29 +36,39 @@ const HeaderComponent: React.FC = () => {
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value.trim());
+      setCurrentUserInput(event.target.value.trim());
     },
-    [setSearchValue],
+    [setCurrentUserInput],
   );
 
   const handleSearch = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      throttledNavigate(searchValue);
+      setSearchValue(currentUserInput);
+      throttledNavigate(currentUserInput);
     },
-    [searchValue, throttledNavigate],
+    [currentUserInput, setSearchValue, throttledNavigate],
   );
+
+  const handleClickNavigate = useCallback(() => {
+    navigate('about');
+  }, [navigate]);
 
   return (
     <header className={styles.header}>
       <form className={styles.headerForm} onSubmit={handleSearch} data-testid="headerForm">
-        <CustomInput placeholder="Search by title" name="Search" value={searchValue} onChange={handleInputChange} />
+        <CustomInput
+          placeholder="Search by title"
+          name="Search"
+          value={currentUserInput}
+          onChange={handleInputChange}
+        />
         <CustomButton type="submit" disabled={!canSearch}>
           Search
         </CustomButton>
       </form>
 
-      <CustomButton onClick={() => navigate('about')}>About us</CustomButton>
+      <CustomButton onClick={handleClickNavigate}>About us</CustomButton>
     </header>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { AnimeData } from '@/types/jikan.interface.ts';
 import ColorThief from 'colorthief';
 import styles from './anime-card.component.module.css';
@@ -6,12 +6,14 @@ import { generateRadialGradient } from '@/common/common.ts';
 
 interface Props {
   anime: AnimeData;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent, anime: AnimeData) => void;
 }
 
 const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
   const [background, setBackground] = useState<string>('linear-gradient(to bottom, #222, #000)');
   const imgRef = useRef<HTMLImageElement | null>(null);
+
+  console.log('rerender', anime.mal_id);
 
   useEffect(() => {
     const img = imgRef.current;
@@ -39,11 +41,18 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
     };
   }, []);
 
+  const handleClick = useCallback(
+    (event: React.MouseEvent) => {
+      onClick?.(event, anime);
+    },
+    [anime, onClick],
+  );
+
   const title = anime.titles[0]?.title ?? 'Untitled';
   const imageUrl = anime.images?.jpg?.image_url;
 
   return (
-    <div className={styles.animeCardContainer} style={{ background }} data-testid="anime-card" onClick={onClick}>
+    <div className={styles.animeCardContainer} style={{ background }} data-testid="anime-card" onClick={handleClick}>
       <div className={styles.animeScore}>★ {anime.score ?? 'N/A'}</div>
       {imageUrl && <img className={styles.animeImg} ref={imgRef} src={imageUrl} crossOrigin="anonymous" alt={title} />}
       <h3 className={styles.animeTitle} title={title}>

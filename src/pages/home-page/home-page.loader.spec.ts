@@ -48,19 +48,7 @@ describe('homePageLoader', () => {
 
     const result = await homePageLoader(makeRequest('http://localhost/?q=bleach&page=3'));
 
-    expect(mockedSearchAnime).toHaveBeenCalledWith('bleach', 3, 20);
-    expect(result).toEqual({ searchResults: animeResponse });
-  });
-
-  it('uses lastSearch from localStorage if query param is empty', async () => {
-    const animeResponse: AnimeSearchResponse = { data: [], pagination: paginationMock };
-
-    mockedSearchAnime.mockResolvedValue(animeResponse);
-
-    localStorage.setItem('lastSearch', JSON.stringify('one piece'));
-    const result = await homePageLoader(makeRequest('http://localhost/?q=&page=1'));
-
-    expect(mockedSearchAnime).toHaveBeenCalledWith('one piece', 1, 20);
+    expect(mockedSearchAnime).toHaveBeenCalledWith('bleach', 3);
     expect(result).toEqual({ searchResults: animeResponse });
   });
 

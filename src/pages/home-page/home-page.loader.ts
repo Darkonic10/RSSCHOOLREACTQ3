@@ -10,24 +10,25 @@ export interface LoaderReturnType {
 export async function homePageLoader({ request }: LoaderFunctionArgs): Promise<LoaderReturnType | Response> {
   const url = new URL(request.url);
 
-  const hasQuery = url.searchParams.has('q');
-  const hasPage = url.searchParams.has('page');
+  const pageValue = Number(url.searchParams.get('page'));
+  const isValidPage = Number.isInteger(pageValue) && pageValue > 0;
 
   const lastSearchStorage = localStorage.getItem('lastSearch');
-  const query = lastSearchStorage ? JSON.parse(lastSearchStorage) : (url.searchParams.get('q') ?? '');
+  const searchParamsSearch = url.searchParams.get('q') ?? '';
+  const query = lastSearchStorage ? JSON.parse(lastSearchStorage) : searchParamsSearch;
+  const isValidQuery = searchParamsSearch === query;
 
-  const page = Number(url.searchParams.get('page') ?? '1');
+  const page = isValidPage ? pageValue : 1;
 
-  if (!hasQuery || !hasPage) {
+  if (!isValidPage || !isValidQuery) {
     const redirectParams = new URLSearchParams(url.searchParams);
-    if (!hasQuery) redirectParams.set('q', query);
-    if (!hasPage) redirectParams.set('page', '1');
-
+    if (!isValidQuery) redirectParams.set('q', query);
+    if (!isValidPage) redirectParams.set('page', '1');
     return redirect(`/?${redirectParams.toString()}`);
   }
 
   try {
-    const data = await searchAnime(query, page || 1, 20);
+    const data = await searchAnime(query, page);
     return { searchResults: data };
   } catch (e) {
     return { error: String(e) };
