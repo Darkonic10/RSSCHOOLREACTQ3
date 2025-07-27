@@ -13,8 +13,6 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
   const [background, setBackground] = useState<string>('linear-gradient(to bottom, #222, #000)');
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  console.log('rerender', anime.mal_id);
-
   useEffect(() => {
     const img = imgRef.current;
     if (!img) return;
