@@ -1,54 +1,76 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './header.component.module.css';
 import CustomInput from '../ui/custom-input/custom-input.tsx';
 import CustomButton from '../ui/custom-button/custom-button.tsx';
+import { useLocalStorage, useThrottleCallback } from '@/common/hooks';
+import { REQUEST_ANIME_DATA_DELAY } from '@/common/constants.ts';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-interface HeaderProps {
-  onSearch: (query: string) => void;
-}
+const HeaderComponent: React.FC = () => {
+  const [searchValue, setSearchValue] = useLocalStorage<string>('lastSearch', '');
+  const [currentUserInput, setCurrentUserInput] = useState<string>(searchValue);
+  const [canSearch, setCanSearch] = useState<boolean>(true);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-interface HeaderState {
-  searchValue: string;
-}
+  const throttledNavigate = useThrottleCallback((query: string) => {
+    setCanSearch(false);
 
-class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
-  state: HeaderState = {
-    searchValue: '',
-  };
+    const newParams = new URLSearchParams();
+    if (query) {
+      newParams.set('q', query);
+    }
+    newParams.set('page', '1');
 
-  componentDidMount() {
-    const savedSearch = localStorage.getItem('lastSearch') ?? '';
-    this.setState({ searchValue: savedSearch });
-    this.props.onSearch(savedSearch);
-  }
+    if (location.pathname === '/') {
+      navigate({ search: `?${newParams.toString()}` }, { replace: true });
+    } else {
+      navigate({
+        pathname: '/',
+        search: `?${newParams.toString()}`,
+      });
+    }
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchValue: event.target.value.trim() });
-  };
+    setTimeout(() => setCanSearch(true), REQUEST_ANIME_DATA_DELAY);
+  }, REQUEST_ANIME_DATA_DELAY);
 
-  handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setCurrentUserInput(event.target.value.trim());
+    },
+    [setCurrentUserInput],
+  );
 
-    const { searchValue } = this.state;
-    localStorage.setItem('lastSearch', searchValue);
-    this.props.onSearch(searchValue);
-  };
+  const handleSearch = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setSearchValue(currentUserInput);
+      throttledNavigate(currentUserInput);
+    },
+    [currentUserInput, setSearchValue, throttledNavigate],
+  );
 
-  render() {
-    return (
-      <header className={styles.header}>
-        <form className={styles.headerForm} onSubmit={this.handleSearch} data-testid="headerForm">
-          <CustomInput
-            placeholder="Search by title"
-            name="Search"
-            value={this.state.searchValue}
-            onChange={this.handleInputChange}
-          />
-          <CustomButton type="submit">Search</CustomButton>
-        </form>
-      </header>
-    );
-  }
-}
+  const handleClickNavigate = useCallback(() => {
+    navigate('about');
+  }, [navigate]);
+
+  return (
+    <header className={styles.header}>
+      <form className={styles.headerForm} onSubmit={handleSearch} data-testid="headerForm">
+        <CustomInput
+          placeholder="Search by title"
+          name="Search"
+          value={currentUserInput}
+          onChange={handleInputChange}
+        />
+        <CustomButton type="submit" disabled={!canSearch}>
+          Search
+        </CustomButton>
+      </form>
+
+      <CustomButton onClick={handleClickNavigate}>About us</CustomButton>
+    </header>
+  );
+};
 
 export default HeaderComponent;

@@ -9,22 +9,18 @@ interface CustomInputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-class CustomInput extends React.Component<CustomInputProps> {
-  render() {
-    const { type = 'text', name, placeholder, value, onChange } = this.props;
-
-    return (
-      <input
-        data-testid="custom-input"
-        className={styles.input}
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
-    );
-  }
-}
+const CustomInput: React.FC<CustomInputProps> = ({ type = 'text', name, placeholder, value, onChange }) => {
+  return (
+    <input
+      data-testid="custom-input"
+      className={styles.input}
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  );
+};
 
 export default CustomInput;

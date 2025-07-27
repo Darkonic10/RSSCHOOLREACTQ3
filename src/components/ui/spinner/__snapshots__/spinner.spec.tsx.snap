@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Spinner > should render spinner with expected structure 1`] = `
+<div>
+  <div
+    class="_loaderContainer_e7a460"
+    data-testid="spinner-container"
+  >
+    <div
+      class="_spinner_e7a460"
+      data-testid="spinner"
+    />
+  </div>
+</div>
+`;

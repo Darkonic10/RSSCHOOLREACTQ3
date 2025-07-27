@@ -1,0 +1,55 @@
+.main {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+.results-container {
+  overflow-y: auto;
+  flex: 3 1 0;
+}
+
+.grid {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.details-container {
+  position: sticky;
+  top: 0;
+
+  overflow-y: auto;
+  flex: 1 1 clamp(100px, 25vw, 400px);
+
+  height: fit-content;
+  padding: 16px;
+  border-radius: 16px;
+
+  background: rgb(30 30 30 / 90%);
+  box-shadow: 0 0 15px rgb(0 0 0 / 50%);
+}
+
+.fullscreen-centered {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  text-align: center;
+}
+
+.main-error {
+  color: red;
+}
+
+.main-empty {
+  font-style: italic;
+}

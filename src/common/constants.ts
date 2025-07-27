@@ -1,0 +1,1 @@
+export const REQUEST_ANIME_DATA_DELAY = 800;
