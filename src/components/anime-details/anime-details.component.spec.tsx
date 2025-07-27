@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AnimeDetailsComponent from './anime-details.component';
 import * as api from '@/api/jikan';
 import * as router from 'react-router-dom';
@@ -33,14 +33,6 @@ vi.mock('react-router-dom', async () => {
 describe('AnimeDetailsComponent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  it('renders anime data from searchResults', async () => {
-    render(<AnimeDetailsComponent />);
-
-    expect(await screen.findByRole('heading', { level: 2 })).toHaveTextContent('Test Anime');
-    expect(screen.getByAltText('Test Anime')).toHaveAttribute('src', 'test.jpg');
-    expect(screen.getByText('Test synopsis')).toBeInTheDocument();
   });
 
   it('calls getAnimeById if anime is not in searchResults', async () => {

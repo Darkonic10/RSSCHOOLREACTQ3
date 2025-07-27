@@ -20,13 +20,6 @@ const AnimeDetailsComponent: React.FC = () => {
   useEffect(() => {
     if (!id) return;
 
-    const existing = currentSearchValue.current?.data.find((a) => String(a.mal_id) === id);
-    if (existing) {
-      setAnime(existing);
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     getAnimeById(id)
       .then((data) => setAnime(data.data))
