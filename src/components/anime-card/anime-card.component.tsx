@@ -54,12 +54,8 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
     [anime, onClick],
   );
 
-  const handleCheckboxClick = useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-  }, []);
-
-  const handleCheckboxChange = useCallback(
-    (event: React.ChangeEvent) => {
+  const handleCheckboxClick = useCallback(
+    (event: React.MouseEvent) => {
       event.stopPropagation();
       toggleCard(anime);
     },
@@ -76,13 +72,17 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
       data-testid="anime-card"
       onClick={handleClick}
     >
-      <input
-        type="checkbox"
-        checked={isSelected}
+      <div
+        className={styles.animeCheckboxContainer}
         onClick={handleCheckboxClick}
-        onChange={handleCheckboxChange}
-        className={styles.animeCheckbox}
-      />
+      >
+        <input
+          type="checkbox"
+          name="pick_card"
+          checked={isSelected}
+          className={styles.animeCheckbox}
+        />
+      </div>
       <div className={styles.animeScore}>★ {anime.score ?? "N/A"}</div>
       {imageUrl && (
         <img

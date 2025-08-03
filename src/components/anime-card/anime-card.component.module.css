@@ -37,7 +37,7 @@
   max-height: 2.4em;
   margin: 0;
 
-  font-family: 'Prosto One', sans-serif;
+  font-family: "Prosto One", sans-serif;
   font-size: 1rem;
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -56,10 +56,23 @@ p {
   font-size: 0.75rem;
 }
 
-.anime-checkbox {
+.anime-checkbox-container {
+  cursor: default;
+
   position: absolute;
   z-index: 2;
   top: 8px;
   right: 8px;
-  transform: scale(1.2);
+
+  padding: 3px;
+  border-radius: 2px;
+
+  .anime-checkbox {
+    transform: scale(1.2);
+    display: block;
+  }
+}
+
+.anime-checkbox-container:hover {
+  background-color: #858585;
 }

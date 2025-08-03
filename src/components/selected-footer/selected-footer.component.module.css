@@ -1,5 +1,5 @@
 .selected-footer-container {
-  position: fixed;
+  position: sticky;
   z-index: 1000;
   right: 0;
   bottom: 0;
