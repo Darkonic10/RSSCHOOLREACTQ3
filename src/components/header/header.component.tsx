@@ -1,32 +1,40 @@
-import React, { useCallback, useState } from 'react';
-import styles from './header.component.module.css';
-import CustomInput from '../ui/custom-input/custom-input.tsx';
-import CustomButton from '../ui/custom-button/custom-button.tsx';
-import { useLocalStorage, useThrottleCallback } from '@/common/hooks';
-import { REQUEST_ANIME_DATA_DELAY } from '@/common/constants.ts';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useCallback, useState } from "react";
+import styles from "./header.component.module.css";
+import CustomInput from "../ui/custom-input/custom-input.tsx";
+import CustomButton from "../ui/custom-button/custom-button.tsx";
+import { useLocalStorage, useThrottleCallback } from "@/common/hooks";
+import { REQUEST_ANIME_DATA_DELAY } from "@/common/constants.ts";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useUIStore } from "@/store/ui-store.ts";
 
 const HeaderComponent: React.FC = () => {
-  const [searchValue, setSearchValue] = useLocalStorage<string>('lastSearch', '');
+  const [searchValue, setSearchValue] = useLocalStorage<string>(
+    "lastSearch",
+    "",
+  );
   const [currentUserInput, setCurrentUserInput] = useState<string>(searchValue);
   const [canSearch, setCanSearch] = useState<boolean>(true);
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const theme = useUIStore((state) => state.theme);
+  const toggleTheme = useUIStore((state) => state.toggleTheme);
 
   const throttledNavigate = useThrottleCallback((query: string) => {
     setCanSearch(false);
 
     const newParams = new URLSearchParams();
     if (query) {
-      newParams.set('q', query);
+      newParams.set("q", query);
     }
-    newParams.set('page', '1');
+    newParams.set("page", "1");
 
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       navigate({ search: `?${newParams.toString()}` }, { replace: true });
     } else {
       navigate({
-        pathname: '/',
+        pathname: "/",
         search: `?${newParams.toString()}`,
       });
     }
@@ -51,12 +59,16 @@ const HeaderComponent: React.FC = () => {
   );
 
   const handleClickNavigate = useCallback(() => {
-    navigate('about');
+    navigate("about");
   }, [navigate]);
 
   return (
     <header className={styles.header}>
-      <form className={styles.headerForm} onSubmit={handleSearch} data-testid="headerForm">
+      <form
+        className={styles.headerForm}
+        onSubmit={handleSearch}
+        data-testid="headerForm"
+      >
         <CustomInput
           placeholder="Search by title"
           name="Search"
@@ -68,7 +80,13 @@ const HeaderComponent: React.FC = () => {
         </CustomButton>
       </form>
 
-      <CustomButton onClick={handleClickNavigate}>About us</CustomButton>
+      <div className={styles.rightButtons}>
+        <CustomButton onClick={toggleTheme}>
+          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+        </CustomButton>
+
+        <CustomButton onClick={handleClickNavigate}>About us</CustomButton>
+      </div>
     </header>
   );
 };

@@ -3,7 +3,7 @@ import type { AnimeData } from "@/types/jikan.interface.ts";
 import ColorThief from "colorthief";
 import styles from "./anime-card.component.module.css";
 import { generateRadialGradient } from "@/common/common.ts";
-import { usePickedCardStore } from "@/store/store.ts";
+import { usePickedCardStore } from "@/store/picked-card-store.ts";
 
 interface Props {
   anime: AnimeData;

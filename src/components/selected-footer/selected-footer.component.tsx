@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { usePickedCardStore } from "@/store/store.ts";
+import { usePickedCardStore } from "@/store/picked-card-store.ts";
 import style from "./selected-footer.component.module.css";
 import CustomButton from "@/components/ui/custom-button/custom-button.tsx";
 import { csvDownload } from "@/common/common.ts";
