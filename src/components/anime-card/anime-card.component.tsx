@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import type { AnimeData } from '@/types/jikan.interface.ts';
-import ColorThief from 'colorthief';
-import styles from './anime-card.component.module.css';
-import { generateRadialGradient } from '@/common/common.ts';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import type { AnimeData } from "@/types/jikan.interface.ts";
+import ColorThief from "colorthief";
+import styles from "./anime-card.component.module.css";
+import { generateRadialGradient } from "@/common/common.ts";
+import { usePickedCardStore } from "@/store/store.ts";
 
 interface Props {
   anime: AnimeData;
@@ -10,8 +11,15 @@ interface Props {
 }
 
 const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
-  const [background, setBackground] = useState<string>('linear-gradient(to bottom, #222, #000)');
+  const [background, setBackground] = useState<string>(
+    "linear-gradient(to bottom, #222, #000)",
+  );
   const imgRef = useRef<HTMLImageElement | null>(null);
+
+  const toggleCard = usePickedCardStore((state) => state.toggleCard);
+  const isSelected = usePickedCardStore((state) =>
+    state.isSelected(anime.mal_id),
+  );
 
   useEffect(() => {
     const img = imgRef.current;
@@ -24,18 +32,18 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
         const gradient = generateRadialGradient(palette);
         setBackground(gradient);
       } catch (error) {
-        console.error('Failed to extract color', error);
+        console.error("Failed to extract color", error);
       }
     };
 
     if (img.complete && img.naturalHeight !== 0) {
       handleImageLoad();
     } else {
-      img.addEventListener('load', handleImageLoad);
+      img.addEventListener("load", handleImageLoad);
     }
 
     return () => {
-      img.removeEventListener('load', handleImageLoad);
+      img.removeEventListener("load", handleImageLoad);
     };
   }, []);
 
@@ -46,24 +54,56 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
     [anime, onClick],
   );
 
-  const title = anime.titles[0]?.title ?? 'Untitled';
+  const handleCheckboxClick = useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+  }, []);
+
+  const handleCheckboxChange = useCallback(
+    (event: React.ChangeEvent) => {
+      event.stopPropagation();
+      toggleCard(anime);
+    },
+    [anime, toggleCard],
+  );
+
+  const title = anime.titles[0]?.title ?? "Untitled";
   const imageUrl = anime.images?.jpg?.image_url;
 
   return (
-    <div className={styles.animeCardContainer} style={{ background }} data-testid="anime-card" onClick={handleClick}>
-      <div className={styles.animeScore}>★ {anime.score ?? 'N/A'}</div>
-      {imageUrl && <img className={styles.animeImg} ref={imgRef} src={imageUrl} crossOrigin="anonymous" alt={title} />}
+    <div
+      className={styles.animeCardContainer}
+      style={{ background }}
+      data-testid="anime-card"
+      onClick={handleClick}
+    >
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onClick={handleCheckboxClick}
+        onChange={handleCheckboxChange}
+        className={styles.animeCheckbox}
+      />
+      <div className={styles.animeScore}>★ {anime.score ?? "N/A"}</div>
+      {imageUrl && (
+        <img
+          className={styles.animeImg}
+          ref={imgRef}
+          src={imageUrl}
+          crossOrigin="anonymous"
+          alt={title}
+        />
+      )}
       <h3 className={styles.animeTitle} title={title}>
         {title}
       </h3>
       <p>
-        <strong>Episodes:</strong> {anime.episodes ?? 'Unknown'}
+        <strong>Episodes:</strong> {anime.episodes ?? "Unknown"}
       </p>
       <p>
-        <strong>Source:</strong> {anime.source ?? 'Unknown'}
+        <strong>Source:</strong> {anime.source ?? "Unknown"}
       </p>
       <p>
-        <strong>Status:</strong> {anime.status ?? 'Unknown'}
+        <strong>Status:</strong> {anime.status ?? "Unknown"}
       </p>
     </div>
   );

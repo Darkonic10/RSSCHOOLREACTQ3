@@ -13,13 +13,11 @@
   box-shadow: 0 8px 9px 0 var(--anime-card-box-shadow-color);
 
   transition: transform 0.2s ease;
+}
 
- }
-
- .anime-card-container:hover {
+.anime-card-container:hover {
   transform: translateY(-4px);
-
- }
+}
 
 .anime-img {
   width: 100%;
@@ -39,7 +37,7 @@
   max-height: 2.4em;
   margin: 0;
 
-  font-family: "Prosto One", sans-serif;
+  font-family: 'Prosto One', sans-serif;
   font-size: 1rem;
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -56,4 +54,12 @@
 p {
   margin: 0;
   font-size: 0.75rem;
+}
+
+.anime-checkbox {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: 8px;
+  transform: scale(1.2);
 }

@@ -1,18 +1,19 @@
-import React, { memo, type MouseEventHandler, useState } from 'react';
-import styles from './custom-button.module.css';
+import React, { memo, type MouseEventHandler, useState } from "react";
+import styles from "./custom-button.module.css";
 
 interface CustomButtonProps {
   children: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
   isNeedError?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
   children,
   onClick,
-  type = 'button',
+  type = "button",
   isNeedError = false,
   disabled = false,
 }) => {
@@ -27,11 +28,17 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   };
 
   if (shouldThrow) {
-    throw new Error('💣 Simulated error in render after click!');
+    throw new Error("💣 Simulated error in render after click!");
   }
 
   return (
-    <button className={styles.button} type={type} onClick={handleClick} disabled={disabled} data-testid="custom-button">
+    <button
+      className={styles.button}
+      type={type}
+      onClick={handleClick}
+      disabled={disabled}
+      data-testid="custom-button"
+    >
       {children}
     </button>
   );
