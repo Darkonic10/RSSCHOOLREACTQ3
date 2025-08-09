@@ -28,7 +28,7 @@ const HomePageComponent: React.FC = () => {
       newParams.set("details", String(anime.mal_id));
       setSearchParams(newParams);
     },
-    [],
+    [currentSearchParams, setSearchParams],
   );
 
   if (navigation.state === "loading") {

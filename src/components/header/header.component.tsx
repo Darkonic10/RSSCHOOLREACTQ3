@@ -5,7 +5,7 @@ import CustomButton from "../ui/custom-button/custom-button.tsx";
 import { useLocalStorage, useThrottleCallback } from "@/common/hooks";
 import { REQUEST_ANIME_DATA_DELAY } from "@/common/constants.ts";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUIStore } from "@/store/ui-store.ts";
+import { useTheme } from "@/common/hooks/useTheme.ts";
 
 const HeaderComponent: React.FC = () => {
   const [searchValue, setSearchValue] = useLocalStorage<string>(
@@ -18,8 +18,7 @@ const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const theme = useUIStore((state) => state.theme);
-  const toggleTheme = useUIStore((state) => state.toggleTheme);
+  const { theme, toggleTheme } = useTheme();
 
   const throttledNavigate = useThrottleCallback((query: string) => {
     setCanSearch(false);

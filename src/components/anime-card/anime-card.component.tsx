@@ -80,6 +80,7 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
           type="checkbox"
           name="pick_card"
           checked={isSelected}
+          onChange={() => {}}
           className={styles.animeCheckbox}
         />
       </div>

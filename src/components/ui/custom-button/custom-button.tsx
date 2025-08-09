@@ -1,4 +1,4 @@
-import React, { memo, type MouseEventHandler, useState } from "react";
+import React, { type MouseEventHandler, useState } from "react";
 import styles from "./custom-button.module.css";
 
 interface CustomButtonProps {
@@ -44,4 +44,4 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   );
 };
 
-export default memo(CustomButton);
+export default CustomButton;
