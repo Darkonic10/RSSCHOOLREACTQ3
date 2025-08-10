@@ -1,37 +1,57 @@
-import React, { useCallback } from "react";
-import AnimeCardComponent from "@/components/anime-card/anime-card.component.tsx";
-import styles from "./home-page.component.module.css";
-import Spinner from "../../components/ui/spinner/spinner.tsx";
-import {
-  useLoaderData,
-  useNavigation,
-  useSearchParams,
-} from "react-router-dom";
-import type { LoaderReturnType } from "@/pages/home-page/home-page.loader.ts";
-import Pagination from "@/components/paginator/paginator.component.tsx";
-import type { AnimeData } from "@/types/jikan.interface.ts";
-import AnimeDetailsComponent from "@/components/anime-details/anime-details.component.tsx";
-import { useCurrentValue } from "@/common/hooks";
-import SelectedFooter from "@/components/selected-footer/selected-footer.component.tsx";
+import React, { useCallback, useEffect, useRef } from 'react';
+import AnimeCardComponent from '@/components/anime-card/anime-card.component.tsx';
+import styles from './home-page.component.module.css';
+import Spinner from '../../components/ui/spinner/spinner.tsx';
+import { useLoaderData, useNavigation, useSearchParams } from 'react-router-dom';
+import type { LoaderReturnType } from '@/pages/home-page/home-page.loader.ts';
+import Pagination from '@/components/paginator/paginator.component.tsx';
+import type { AnimeData } from '@/types/jikan.interface.ts';
+import AnimeDetailsComponent from '@/components/anime-details/anime-details.component.tsx';
+import { useCurrentValue, useSearchAnime } from '@/common/hooks';
+import SelectedFooter from '@/components/selected-footer/selected-footer.component.tsx';
+import { useSearchStore } from '@/store/search-list-store.ts';
+import CustomButton from '@/components/ui/custom-button/custom-button.tsx';
+import { useQueryClient } from '@tanstack/react-query';
 
 const HomePageComponent: React.FC = () => {
-  const { error, searchResults } = useLoaderData<LoaderReturnType>();
+  const queryClient = useQueryClient();
+  const { details } = useLoaderData<LoaderReturnType>();
+  const { data: searchResults, isLoading, error } = useSearchAnime();
   const navigation = useNavigation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const currentSearchParams = useCurrentValue(searchParams);
+  const hasSyncedUrl = useRef(false);
+  const query = useSearchStore((state) => state.query);
+
+  useEffect(() => {
+    if (hasSyncedUrl.current) return;
+
+    const urlQ = searchParams.get('q') ?? '';
+    if (urlQ !== query) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set('q', query);
+      setSearchParams(newParams, { replace: true });
+    }
+
+    hasSyncedUrl.current = true;
+  }, [query, searchParams, setSearchParams]);
 
   const handleCardClick = useCallback(
     (event: React.MouseEvent, anime: AnimeData) => {
       event.stopPropagation();
       const newParams = new URLSearchParams(currentSearchParams.current);
-      newParams.set("details", String(anime.mal_id));
+      newParams.set('details', String(anime.mal_id));
       setSearchParams(newParams);
     },
     [currentSearchParams, setSearchParams],
   );
 
-  if (navigation.state === "loading") {
+  const handleRefetchAll = useCallback(() => {
+    void queryClient.invalidateQueries();
+  }, [queryClient]);
+
+  if (navigation.state === 'loading' || isLoading) {
     return (
       <div className={styles.fullscreenCentered}>
         <Spinner />
@@ -42,7 +62,7 @@ const HomePageComponent: React.FC = () => {
   if (error) {
     return (
       <div className={`${styles.fullscreenCentered} ${styles.mainError}`}>
-        <p>{error}</p>
+        <p>{error.message}</p>
       </div>
     );
   }
@@ -63,21 +83,15 @@ const HomePageComponent: React.FC = () => {
         <div className={styles.resultsContainer}>
           <div className={styles.grid}>
             {searchResults.data.map((anime, i) => (
-              <AnimeCardComponent
-                key={`${anime.mal_id}-${i}`}
-                anime={anime}
-                onClick={handleCardClick}
-              />
+              <AnimeCardComponent key={`${anime.mal_id}-${i}`} anime={anime} onClick={handleCardClick} />
             ))}
           </div>
 
-          <Pagination
-            currentPage={current_page}
-            totalPages={last_visible_page}
-          />
+          <Pagination currentPage={current_page} totalPages={last_visible_page} />
+          <CustomButton onClick={handleRefetchAll}>Refetch</CustomButton>
         </div>
 
-        {searchParams.has("details") && (
+        {details && (
           <div className={styles.detailsContainer}>
             <AnimeDetailsComponent />
           </div>

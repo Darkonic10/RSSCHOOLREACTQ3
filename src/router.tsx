@@ -15,12 +15,6 @@ export const router = createBrowserRouter(
           index: true,
           element: <HomePageComponent />,
           loader: homePageLoader,
-          shouldRevalidate: ({ currentUrl, nextUrl }) => {
-            const curr = new URLSearchParams(currentUrl.search);
-            const next = new URLSearchParams(nextUrl.search);
-
-            return curr.get('q') !== next.get('q') || curr.get('page') !== next.get('page');
-          },
         },
         {
           path: 'about',

@@ -1,36 +1,30 @@
-import { searchAnime } from '@/api/jikan.ts';
 import { type LoaderFunctionArgs, redirect } from 'react-router-dom';
-import type { AnimeSearchResponse } from '@/types/jikan.interface.ts';
 
 export interface LoaderReturnType {
-  searchResults?: AnimeSearchResponse;
-  error?: string;
+  q: string;
+  page: number;
+  details?: number;
 }
 
 export async function homePageLoader({ request }: LoaderFunctionArgs): Promise<LoaderReturnType | Response> {
   const url = new URL(request.url);
 
-  const pageValue = Number(url.searchParams.get('page'));
-  const isValidPage = Number.isInteger(pageValue) && pageValue > 0;
+  const page = Number(url.searchParams.get('page'));
+  const isValidPage = Number.isInteger(page) && page > 0;
 
-  const lastSearchStorage = localStorage.getItem('lastSearch');
-  const searchParamsSearch = url.searchParams.get('q') ?? '';
-  const query = lastSearchStorage ? JSON.parse(lastSearchStorage) : searchParamsSearch;
-  const isValidQuery = searchParamsSearch === query;
+  const rawDetails = url.searchParams.get('details');
+  const isHasDetails = rawDetails !== null;
+  const details = isHasDetails ? Number(rawDetails) : undefined;
+  const isValidDetails = details === undefined || (Number.isInteger(details) && details >= 0);
 
-  const page = isValidPage ? pageValue : 1;
+  const q = (url.searchParams.get('q') ?? '').trim();
 
-  if (!isValidPage || !isValidQuery) {
+  if (!isValidPage || (isHasDetails && !isValidDetails)) {
     const redirectParams = new URLSearchParams(url.searchParams);
-    if (!isValidQuery) redirectParams.set('q', query);
     if (!isValidPage) redirectParams.set('page', '1');
+    if (!isValidDetails) redirectParams.delete('details');
     return redirect(`/?${redirectParams.toString()}`);
   }
 
-  try {
-    const data = await searchAnime(query, page);
-    return { searchResults: data };
-  } catch (e) {
-    return { error: String(e) };
-  }
+  return { q, page, details };
 }
