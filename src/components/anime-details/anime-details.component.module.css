@@ -21,7 +21,6 @@
 .details-container p {
   font-size: 0.85rem;
   line-height: 1.4;
-  color: #ddd;
 }
 
 .close-button {
@@ -41,5 +40,5 @@
 }
 
 .close-button:hover {
-  color: #f44;
+  color: var(--custom-button-bg);
 }

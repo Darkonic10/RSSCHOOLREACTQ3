@@ -13,13 +13,11 @@
   box-shadow: 0 8px 9px 0 var(--anime-card-box-shadow-color);
 
   transition: transform 0.2s ease;
+}
 
- }
-
- .anime-card-container:hover {
+.anime-card-container:hover {
   transform: translateY(-4px);
-
- }
+}
 
 .anime-img {
   width: 100%;
@@ -56,4 +54,25 @@
 p {
   margin: 0;
   font-size: 0.75rem;
+}
+
+.anime-checkbox-container {
+  cursor: default;
+
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: 8px;
+
+  padding: 3px;
+  border-radius: 2px;
+
+  .anime-checkbox {
+    transform: scale(1.2);
+    display: block;
+  }
+}
+
+.anime-checkbox-container:hover {
+  background-color: #858585;
 }

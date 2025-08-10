@@ -1,12 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import App from '@/App.tsx';
-import { MemoryRouter } from 'react-router-dom';
+import { screen } from "@testing-library/react";
+import App from "@/App.tsx";
+import { renderWithProviders } from "@/common/test-utils.tsx";
 
-test('App renders HeaderComponent', () => {
-  render(
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>,
-  );
-  expect(screen.getByRole('textbox')).toBeInTheDocument();
+test("App renders HeaderComponent", () => {
+  renderWithProviders(<App />);
+  expect(screen.getByRole("textbox")).toBeInTheDocument();
 });

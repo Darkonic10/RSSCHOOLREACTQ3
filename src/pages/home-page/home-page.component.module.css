@@ -1,5 +1,6 @@
 .main {
   display: flex;
+  flex: 1;
   gap: 16px;
   justify-content: center;
 
@@ -30,8 +31,8 @@
   padding: 16px;
   border-radius: 16px;
 
-  background: rgb(30 30 30 / 90%);
-  box-shadow: 0 0 15px rgb(0 0 0 / 50%);
+  background: var(--anime-card-bg);
+  box-shadow: var(--anime-card-box-shadow-color);
 }
 
 .fullscreen-centered {
