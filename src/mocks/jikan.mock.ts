@@ -99,8 +99,8 @@ export const animeMock: AnimeData = {
 };
 
 export const animeMockMinimal: AnimeData = {
-  mal_id: 1,
-  url: 'https://myanimelist.net/anime/1/Naruto',
+  mal_id: 20,
+  url: 'https://myanimelist.net/anime/20/Naruto',
   images: {
     jpg: {
       image_url: undefined,

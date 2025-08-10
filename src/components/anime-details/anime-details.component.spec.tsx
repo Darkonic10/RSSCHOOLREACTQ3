@@ -1,32 +1,30 @@
+import { renderWithProviders } from '@/common/test-utils.tsx';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import AnimeDetailsComponent from './anime-details.component';
-import * as api from '@/api/jikan';
 import * as router from 'react-router-dom';
-
-vi.mock('@/api/jikan', () => ({
-  getAnimeById: vi.fn(),
-}));
+import { useAnimeDetails } from '@/common/hooks';
 
 const mockSetSearchParams = vi.fn();
 
+vi.mock('@/common/hooks/useSearchAnime', () => ({
+  useSearchAnime: vi.fn(() => ({
+    data: { data: [] },
+    isLoading: false,
+    error: null,
+  })),
+  useAnimeDetails: vi.fn(() => ({
+    data: null,
+    isLoading: false,
+    error: null,
+  })),
+}));
+
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof router>('react-router-dom');
+  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
   return {
     ...actual,
     useSearchParams: vi.fn(() => [new URLSearchParams('details=1'), mockSetSearchParams]),
-    useLoaderData: vi.fn(() => ({
-      searchResults: {
-        data: [
-          {
-            mal_id: 1,
-            titles: [{ title: 'Test Anime' }],
-            images: { jpg: { image_url: 'test.jpg' } },
-            synopsis: 'Test synopsis',
-          },
-        ],
-      },
-    })),
   };
 });
 
@@ -41,31 +39,33 @@ describe('AnimeDetailsComponent', () => {
       mockSetSearchParams,
     ]);
 
-    (api.getAnimeById as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
+    (useAnimeDetails as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       data: {
         mal_id: 2,
         titles: [{ title: 'Fetched Anime' }],
         images: { jpg: { image_url: 'fetched.jpg' } },
         synopsis: 'Fetched synopsis',
       },
+      isLoading: false,
+      error: null,
     });
 
-    render(<AnimeDetailsComponent />);
-
-    await waitFor(() => {
-      expect(api.getAnimeById).toHaveBeenCalledWith('2');
-    });
+    renderWithProviders(<AnimeDetailsComponent />);
 
     expect(await screen.findByRole('heading', { level: 2 })).toHaveTextContent('Fetched Anime');
     expect(screen.getByAltText('Fetched Anime')).toHaveAttribute('src', 'fetched.jpg');
     expect(screen.getByText('Fetched synopsis')).toBeInTheDocument();
   });
 
-  it('shows Spinner if loading or no anime data', () => {
-    (router.useLoaderData as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ searchResults: { data: [] } });
+  it('shows text for no anime data', () => {
+    (useAnimeDetails as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: null,
+    });
 
     render(<AnimeDetailsComponent />);
-    expect(screen.getByTestId('spinner-container')).toBeInTheDocument();
+    expect(screen.getByText('No details available.')).toBeInTheDocument();
   });
 
   it('removes details param when close button is clicked', () => {
