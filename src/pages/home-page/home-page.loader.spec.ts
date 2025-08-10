@@ -1,16 +1,12 @@
-import { searchAnime } from '@/api/jikan.ts';
-import { homePageLoader, type LoaderReturnType } from '@/pages/home-page/home-page.loader.ts';
+import { homePageLoader } from '@/pages/home-page/home-page.loader.ts';
 import type { LoaderFunctionArgs } from 'react-router-dom';
-import type { AnimeSearchResponse } from '@/types/jikan.interface.ts';
-import { localStorageMock, paginationMock } from '@/mocks';
+import { localStorageMock } from '@/mocks';
 
 vi.mock('@/api/jikan.ts', () => ({
   searchAnime: vi.fn(),
 }));
 
 describe('homePageLoader', () => {
-  const mockedSearchAnime = searchAnime as unknown as ReturnType<typeof vi.fn>;
-
   beforeEach(() => {
     vi.stubGlobal('localStorage', localStorageMock);
     localStorage.clear();
@@ -25,39 +21,46 @@ describe('homePageLoader', () => {
     };
   }
 
-  it('redirects if "q" or "page" param is missing', async () => {
-    localStorage.setItem('lastSearch', JSON.stringify('naruto'));
-
+  it('returns default values or redirects if params are missing or invalid', async () => {
     let response = await homePageLoader(makeRequest('http://localhost/?page=2'));
-    expect(response).toHaveProperty('status', 302);
-    if ('headers' in response) {
-      expect(response.headers.get('Location')).toContain('q=naruto');
-    }
+    expect(response).toEqual({ q: '', page: 2, details: undefined });
 
     response = await homePageLoader(makeRequest('http://localhost/?q=naruto'));
-    expect(response).toHaveProperty('status', 302);
+    expect('status' in response && response.status).toBe(302);
+    if ('headers' in response) {
+      expect(response.headers.get('Location')).toContain('page=1');
+    }
+
+    response = await homePageLoader(makeRequest('http://localhost/?q=naruto&page=0'));
+    expect('status' in response && response.status).toBe(302);
     if ('headers' in response) {
       expect(response.headers.get('Location')).toContain('page=1');
     }
   });
 
-  it('calls searchAnime with correct query and page', async () => {
-    const animeResponse: AnimeSearchResponse = { data: [], pagination: paginationMock };
-
-    mockedSearchAnime.mockResolvedValue(animeResponse);
-
-    const result = await homePageLoader(makeRequest('http://localhost/?q=bleach&page=3'));
-
-    expect(mockedSearchAnime).toHaveBeenCalledWith('bleach', 3);
-    expect(result).toEqual({ searchResults: animeResponse });
+  it('redirects if details param is invalid', async () => {
+    const response = await homePageLoader(makeRequest('http://localhost/?q=naruto&page=1&details=abc'));
+    expect(response).toHaveProperty('status', 302);
+    if ('headers' in response) {
+      expect(response.headers.get('Location')).not.toContain('details=abc');
+    }
   });
 
-  it('returns error on searchAnime failure', async () => {
-    mockedSearchAnime.mockRejectedValue(new Error('API failure'));
+  it('returns parameters if valid', async () => {
+    const result = await homePageLoader(makeRequest('http://localhost/?q=bleach&page=3&details=42'));
+    expect(result).toEqual({
+      q: 'bleach',
+      page: 3,
+      details: 42,
+    });
+  });
 
-    const result = await homePageLoader(makeRequest('http://localhost/?q=naruto&page=1'));
-
-    expect(result).toHaveProperty('error');
-    expect((result as LoaderReturnType).error).toContain('API failure');
+  it('returns parameters without details if details missing', async () => {
+    const result = await homePageLoader(makeRequest('http://localhost/?q=bleach&page=3'));
+    expect(result).toEqual({
+      q: 'bleach',
+      page: 3,
+      details: undefined,
+    });
   });
 });

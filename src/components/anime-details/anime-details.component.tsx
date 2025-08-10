@@ -1,49 +1,23 @@
-import { useLoaderData, useSearchParams } from "react-router-dom";
-import React, { useCallback, useEffect, useState } from "react";
-import Spinner from "@/components/ui/spinner/spinner.tsx";
-import type { AnimeData } from "@/types/jikan.interface.ts";
-import styles from "./anime-details.component.module.css";
-import { getAnimeById } from "@/api/jikan.ts";
-import type { LoaderReturnType } from "@/pages/home-page/home-page.loader.ts";
-import { useCurrentValue } from "@/common/hooks";
+import { useSearchParams } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import Spinner from '@/components/ui/spinner/spinner.tsx';
+import styles from './anime-details.component.module.css';
+import { useAnimeDetails, useSearchAnime } from '@/common/hooks';
 
 const AnimeDetailsComponent: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const id = searchParams.get("details");
-  const { searchResults } = useLoaderData<LoaderReturnType>();
+  const id = searchParams.get('details');
 
-  const [anime, setAnime] = useState<AnimeData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: searchResults } = useSearchAnime();
+  const initialAnime = React.useMemo(() => {
+    return searchResults?.data.find((a) => String(a.mal_id) === id) ?? null;
+  }, [searchResults?.data, id]);
 
-  const currentSearchValue = useCurrentValue(searchResults);
-
-  useEffect(() => {
-    if (!id) return;
-
-    setError(null);
-    const existing = currentSearchValue.current?.data.find(
-      (a) => String(a.mal_id) === id,
-    );
-    if (existing) {
-      setAnime(existing);
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    getAnimeById(id)
-      .then((data) => setAnime(data.data))
-      .catch(() => {
-        setAnime(null);
-        setError("Failed to load anime details.");
-      })
-      .finally(() => setLoading(false));
-  }, [currentSearchValue, id]);
+  const { data: anime, isLoading, error } = useAnimeDetails(id ?? undefined, initialAnime);
 
   const handleClose = useCallback(() => {
     const newParams = new URLSearchParams(searchParams);
-    newParams.delete("details");
+    newParams.delete('details');
     setSearchParams(newParams);
   }, [searchParams, setSearchParams]);
 
@@ -53,11 +27,11 @@ const AnimeDetailsComponent: React.FC = () => {
         ×
       </button>
 
-      {loading ? (
+      {isLoading ? (
         <Spinner />
       ) : error ? (
         <div className={styles.mainError}>
-          <p>{error}</p>
+          <p>{error.message}</p>
         </div>
       ) : anime ? (
         <>

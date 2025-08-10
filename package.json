@@ -20,6 +20,7 @@
     "deploy": "npm run build && cp dist/index.html dist/404.html && gh-pages -d dist --nojekyll"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.84.2",
     "colorthief": "^2.6.0",
     "modern-normalize": "^3.0.1",
     "react": "^19.1.0",

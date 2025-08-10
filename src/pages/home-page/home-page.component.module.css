@@ -11,6 +11,7 @@
 .results-container {
   overflow-y: auto;
   flex: 3 1 0;
+  text-align: center;
 }
 
 .grid {
