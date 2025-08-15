@@ -1,0 +1,57 @@
+.main {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+  justify-content: center;
+
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+.resultsContainer {
+  overflow-y: auto;
+  flex: 3 1 0;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.detailsContainer {
+  position: sticky;
+  top: 0;
+
+  overflow-y: auto;
+  flex: 1 1 clamp(100px, 25vw, 400px);
+
+  height: fit-content;
+  padding: 16px;
+  border-radius: 16px;
+
+  background: var(--anime-card-bg);
+  box-shadow: var(--anime-card-box-shadow-color);
+}
+
+.fullscreenCentered {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  text-align: center;
+}
+
+.mainError {
+  color: red;
+}
+
+.mainEmpty {
+  font-style: italic;
+}
