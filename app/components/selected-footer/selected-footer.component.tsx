@@ -28,12 +28,12 @@ const SelectedFooter: React.FC = () => {
   return (
     <div className={style.selectedFooterContainer}>
       <span>{`Picked ${selected.length} element(s)`}</span>
-      <div className={style.buttonContainer}>
+      <form className={style.buttonContainer} action={handleDownload}>
         <CustomButton onClick={clearSelected}>Cancel selection</CustomButton>
-        <CustomButton onClick={handleDownload} disabled={selected.length === 0}>
+        <CustomButton disabled={selected.length === 0} type="submit">
           Load
         </CustomButton>
-      </div>
+      </form>
     </div>
   );
 };

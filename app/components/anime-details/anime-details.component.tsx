@@ -3,16 +3,22 @@ import React, { useCallback } from 'react';
 import Spinner from '@/components/ui/spinner/spinner.tsx';
 import styles from './anime-details.component.module.css';
 import { useAnimeDetails, useSearchAnime } from '@/common/hooks';
+import Image from 'next/image';
+import type { AnimeData } from '@/types/jikan.interface.ts';
 
-const AnimeDetailsComponent: React.FC = () => {
+interface Props {
+  initialDetails?: AnimeData | null;
+}
+
+const AnimeDetailsComponent: React.FC<Props> = ({ initialDetails }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get('details');
 
   const { data: searchResults } = useSearchAnime();
   const initialAnime = React.useMemo(() => {
-    return searchResults?.data.find((a) => String(a.mal_id) === id) ?? null;
-  }, [searchResults?.data, id]);
+    return initialDetails?.mal_id === Number(id) ? initialDetails : (searchResults?.data.find((a) => String(a.mal_id) === id) ?? null);
+  }, [initialDetails, id, searchResults?.data]);
 
   const { data: anime, isLoading, error } = useAnimeDetails(id ?? undefined, initialAnime);
 
@@ -37,7 +43,7 @@ const AnimeDetailsComponent: React.FC = () => {
       ) : anime ? (
         <>
           <h2 title={anime.titles[0].title}>{anime.titles[0].title}</h2>
-          <img src={anime.images.jpg.image_url} alt={anime.titles[0].title} />
+          <Image src={anime.images.jpg.image_url ?? ''} alt={anime.titles[0].title} width={225} height={331} />
           <p>{anime.synopsis}</p>
         </>
       ) : (

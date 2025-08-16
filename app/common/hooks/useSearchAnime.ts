@@ -1,17 +1,15 @@
-import { useSearchStore } from '@/store/search-list-store.ts';
 import { useQuery } from '@tanstack/react-query';
 import { getAnimeById, searchAnime } from '@/api/jikan.ts';
-import type { AnimeData } from '@/types/jikan.interface.ts';
+import type { AnimeData, AnimeSearchResponse } from '@/types/jikan.interface.ts';
 
-export function useSearchAnime() {
-  const query = useSearchStore((state) => state.query);
-  const page = useSearchStore((state) => state.page);
-
+export function useSearchAnime(query?: string, page?: number, initialData?: AnimeSearchResponse) {
   return useQuery({
     queryKey: ['searchAnime', query, page],
-    queryFn: () => searchAnime(query.trim(), page, 12),
+    queryFn: () => searchAnime(query?.trim() ?? '', page ?? 1, 12),
     staleTime: 1000 * 60 * 15,
     retry: 1,
+    ...(initialData ? { initialData } : {}),
+    refetchOnMount: (data) => data == null,
   });
 }
 

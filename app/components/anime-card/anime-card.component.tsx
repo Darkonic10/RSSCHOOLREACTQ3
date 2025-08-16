@@ -4,6 +4,7 @@ import ColorThief from 'colorthief';
 import styles from './anime-card.component.module.css';
 import { generateRadialGradient } from '@/common/common.ts';
 import { usePickedCardStore } from '@/store/picked-card-store.ts';
+import Image from 'next/image';
 
 interface Props {
   anime: AnimeData;
@@ -67,7 +68,9 @@ const AnimeCardComponent: React.FC<Props> = ({ anime, onClick }) => {
         <input type="checkbox" name="pick_card" checked={isSelected} onChange={() => {}} className={styles.animeCheckbox} />
       </div>
       <div className={styles.animeScore}>★ {anime.score ?? 'N/A'}</div>
-      {imageUrl && <img className={styles.animeImg} ref={imgRef} src={imageUrl} crossOrigin="anonymous" alt={title} />}
+      {imageUrl && (
+        <Image className={styles.animeImg} ref={imgRef} src={imageUrl} crossOrigin="anonymous" alt={title} width={225} height={331} />
+      )}
       <h3 className={styles.animeTitle} title={title}>
         {title}
       </h3>
