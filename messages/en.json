@@ -1,0 +1,32 @@
+{
+  "Header": {
+    "input-search": "Search by title",
+    "button-main": "Main page",
+    "button-search": "Search",
+    "button-about": "About"
+  },
+  "HomePage": {
+    "not-found": "No results found",
+    "invalidate": "Invalidate"
+  },
+  "AboutPage": {
+    "about-head": "About This Application",
+    "author": "Author",
+    "created": "This application was created as part of the",
+    "course": "course"
+  },
+  "Card": {
+    "untitled": "Untitled",
+    "n/a": "N/A",
+    "unknown": "Unknown",
+    "episodes": "Episodes",
+    "source": "Source",
+    "status": "Status"
+  },
+  "Paginator": {
+    "prev": "Prev",
+    "next": "Next",
+    "page": "Page",
+    "of": "of"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Header": {
+    "input-search": "Поиск по названию",
+    "button-main": "Главная страница",
+    "button-search": "Поиск",
+    "button-about": "О нас"
+  },
+  "HomePage": {
+    "not-found": "Результатов не найдено",
+    "invalidate": "Аннулировать"
+  },
+  "AboutPage": {
+    "about-head": "Об этом приложении",
+    "author": "Автор",
+    "created": "Это приложение было создано в рамках",
+    "course": "курс(а)"
+  },
+  "Card": {
+    "untitled": "Без названия",
+    "n/a": "Н/Д",
+    "unknown": "Неизвестно",
+    "episodes": "Эпизоды",
+    "source": "Источник",
+    "status": "Статус"
+  },
+  "Paginator": {
+    "prev": "Пред",
+    "next": "След",
+    "page": "Страница",
+    "of": "из"
+  }
+}

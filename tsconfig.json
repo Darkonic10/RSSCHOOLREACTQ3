@@ -35,17 +35,20 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "~/*": [
+        "src/*"
+      ],
       "@/*": [
-        "app/*"
+        "src/app/*"
       ],
       "@/styles": [
-        "app/styles/*"
+        "src/app/styles/*"
       ]
     },
     "resolveJsonModule": true
   },
   "include": [
-    "./app",
+    "./src/",
     "./dist/types/**/*.ts",
     "./next-env.d.ts"
   ],
