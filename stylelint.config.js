@@ -4,5 +4,6 @@ export default {
   rules: {
     'at-rule-no-deprecated': null,
     'custom-property-pattern': null,
+    'selector-class-pattern': "^[a-z][a-zA-Z0-9]+$",
   },
 };

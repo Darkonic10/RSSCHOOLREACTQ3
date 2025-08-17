@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 24px 12px;
+
+  background-color: var(--header-bg);
+  box-shadow: 0 1px 3px var(--header-box-shadow-color);
+
+  @media (width < 570px) {
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+  }
+}
+
+.headerForm {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.rightButtons {
+  display: flex;
+  gap: 10px;
+}

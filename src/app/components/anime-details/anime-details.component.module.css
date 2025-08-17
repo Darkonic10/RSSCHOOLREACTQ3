@@ -1,0 +1,44 @@
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detailsContainer img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  border-radius: 12px;
+
+  object-fit: contain;
+}
+
+.detailsContainer h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.detailsContainer p {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.closeButton {
+  cursor: pointer;
+
+  align-self: flex-end;
+
+  padding: 4px 8px;
+  border: none;
+
+  font-size: 1.5rem;
+  color: #eee;
+
+  background: transparent;
+
+  transition: color 0.3s ease;
+}
+
+.closeButton:hover {
+  color: var(--custom-button-bg);
+}
