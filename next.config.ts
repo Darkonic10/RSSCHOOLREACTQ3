@@ -3,7 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   distDir: './dist',
-  basePath: process.env.NODE_ENV === 'production' ? '/RSSCHOOLREACTQ3/' : '',
+  basePath: '',
   images: {
     unoptimized: true,
   },

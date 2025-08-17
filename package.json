@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "next dev",
-    "build": "tsc -b && build build",
+    "build": "tsc -b && next build",
     "type-check": "tsc -b --noEmit",
     "format:fix": "prettier --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint src --ext .ts,.tsx,.html",
