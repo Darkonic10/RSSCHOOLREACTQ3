@@ -1,12 +1,16 @@
-'use client';
+import { Link } from '~/i18n/navigation.ts';
+import { useTranslations } from 'next-intl';
+import styles from './not-found.module.css';
+import CustomButton from '@/components/ui/custom-button/custom-button.tsx';
 
-import Link from 'next/link';
-
-export default function page404() {
+export default function Page404() {
+  const t = useTranslations('404');
   return (
-    <div style={{ padding: '2rem', textAlign: 'center' }}>
-      <h1>404 — Page not found</h1>
-      <Link href="/">Return to the main</Link>
+    <div className={styles.notFoundContainer}>
+      <h1>404 — {t('not-found')}</h1>
+      <Link href="/">
+        <CustomButton>{t('return')}</CustomButton>
+      </Link>
     </div>
   );
 }

@@ -23,6 +23,16 @@
     "source": "Source",
     "status": "Status"
   },
+  "404": {
+    "not-found": "Page not found",
+    "return": "Return to the main"
+  },
+  "Footer": {
+    "picked": "Picked",
+    "elements": "element(s)",
+    "cancel": "Cancel selection",
+    "load": "Load"
+  },
   "Paginator": {
     "prev": "Prev",
     "next": "Next",
