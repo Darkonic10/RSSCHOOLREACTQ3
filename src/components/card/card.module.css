@@ -1,0 +1,18 @@
+.card {
+  width: fit-content;
+  max-width: 300px;
+  padding: 10px;
+  border-radius: 10px;
+
+  background-color: gray;
+}
+
+.img {
+  display: block;
+  max-width: 230px;
+  margin: 0 auto
+}
+
+.highlight {
+  box-shadow: 0 0 10px 10px white;
+}
