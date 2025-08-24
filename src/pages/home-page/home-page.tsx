@@ -8,7 +8,7 @@ import styles from './home-page.module.css';
 import cardStyles from '../../components/card/card.module.css';
 
 export function HomePage() {
-  const [modal, setModal] = useState<'uncontrolled' | 'rhf' | null>(null);
+  const [modal, setModal] = useState<'uncontrolled' | 'controlled' | null>(null);
   const { data } = useFormStore();
 
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
@@ -30,7 +30,7 @@ export function HomePage() {
     <div className={styles.homePage}>
       <div className={styles.formButtonsContainer}>
         <button onClick={() => setModal('uncontrolled')}>Open Uncontrolled</button>
-        <button onClick={() => setModal('rhf')}>Open RHF</button>
+        <button onClick={() => setModal('controlled')}>Open Controlled</button>
       </div>
 
       {modal === 'uncontrolled' && (
@@ -38,7 +38,7 @@ export function HomePage() {
           <UncontrolledForm onSuccess={() => setModal(null)} />
         </Modal>
       )}
-      {modal === 'rhf' && (
+      {modal === 'controlled' && (
         <Modal onClose={() => setModal(null)}>
           <ControlledForm onSuccess={() => setModal(null)} />
         </Modal>

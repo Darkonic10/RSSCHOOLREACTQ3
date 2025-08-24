@@ -37,6 +37,7 @@ export function UncontrolledForm({ onSuccess }: { onSuccess: () => void }) {
     }
 
     if (result.success) {
+      setErrors({});
       setData(result.data as MyFormData);
       onSuccess();
     }

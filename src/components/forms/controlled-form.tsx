@@ -88,7 +88,7 @@ export function ControlledForm({ onSuccess }: { onSuccess: () => void }) {
       </div>
 
       <div>
-        <input type="file" accept="image/png, image/jpeg" {...register('file')} />
+        <input type="file" accept="image/png, image/jpeg" {...register('file')} data-testid="file-input" />
         <p className={styles.error}>{String(errors.file?.message ?? '')}</p>
       </div>
 

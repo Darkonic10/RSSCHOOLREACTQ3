@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './autocomplete.module.css';
 
-type AutocompleteProps = {
+export type AutocompleteProps = {
   id: string;
   label: string;
   options: string[];

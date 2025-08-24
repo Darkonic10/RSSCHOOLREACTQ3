@@ -1,12 +1,12 @@
 import type { MyFormData } from '@/store/form-data.ts';
 import styles from './card.module.css';
 
-type ModalProps = {
+export type CardProps = {
   data: MyFormData;
   className?: string;
 };
 
-export function Card({ data, className }: ModalProps) {
+export function Card({ data, className }: CardProps) {
   return (
     <div className={`${styles.card} ${className}`}>
       <img src={URL.createObjectURL(data.file)} alt="Preview" className={styles.img} />
