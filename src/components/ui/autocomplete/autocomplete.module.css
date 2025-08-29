@@ -1,0 +1,31 @@
+.autocomplete {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 10;
+
+  overflow-y: auto;
+
+  width: 100%;
+  max-height: 150px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+
+  list-style: none;
+
+  background: white;
+}
+
+.dropdown li {
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.dropdown li:hover {
+  background: #eee;
+}
