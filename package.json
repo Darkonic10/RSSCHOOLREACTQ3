@@ -17,7 +17,7 @@
     "test:coverage": "vitest run --coverage",
     "preview": "vite preview",
     "prepare": "husky",
-    "deploy": "npm run build && cp dist/index.html dist/404.html && gh-pages -d dist --nojekyll"
+    "deploy": "npm run build && gh-pages -d dist -e forms"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
