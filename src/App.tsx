@@ -1,10 +1,11 @@
-function App() {
+import HomePage from '@/pages/home-page.tsx';
 
+function App() {
   return (
     <>
-      test
+      <HomePage></HomePage>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

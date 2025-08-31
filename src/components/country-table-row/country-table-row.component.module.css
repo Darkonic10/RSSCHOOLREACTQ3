@@ -1,0 +1,13 @@
+.highlight {
+  background-color: rgb(255 235 59 / 40%);
+  transition: background-color 0.5s ease;
+}
+
+.tr:nth-child(even) {
+  background: gray;
+}
+
+.td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
