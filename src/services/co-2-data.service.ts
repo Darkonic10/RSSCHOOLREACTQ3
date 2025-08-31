@@ -6,7 +6,7 @@ export function createCo2DataLoader() {
   return function getCo2Data() {
     if (!co2DataPromise) {
       co2DataPromise = (async () => {
-        const res = await fetch('./src/assets/data/owid-co2-data.json');
+        const res = await fetch('./owid-co2-data.json');
         if (!res.ok) {
           throw new Error('Error load Co2 Data');
         }
